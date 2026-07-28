@@ -11,10 +11,8 @@
   Usage:
   {% render 'facets', results: collection, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
 {% endcomment %}
- 
 
 {{ 'component-show-more.css' | asset_url | stylesheet_tag }}
-{{ 'component-visual-display.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -25,20 +23,13 @@
     assign terms = results.terms | escape
     assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
   endif
-
-  # cart.currency.symbol is sometimes empty depending on store/locale settings,
-  # so derive the symbol reliably from the store's money_format instead.
-  assign currency_symbol = shop.money_format | strip_html | remove: '{{amount_with_comma_separator}}' | remove: '{{ amount_with_comma_separator }}' | remove: '{{amount_no_decimals_with_comma_separator}}' | remove: '{{ amount_no_decimals_with_comma_separator }}' | remove: '{{amount_no_decimals}}' | remove: '{{ amount_no_decimals }}' | remove: '{{amount}}' | remove: '{{ amount }}' | strip
-  if currency_symbol == blank
-    assign currency_symbol = cart.currency.symbol
-  endif
 -%}
 
-<div class="facets-container{% if filter_type == 'drawer' %} facets-container-drawer{% endif %}{% if filter_type == 'vertical' %} facets-container--redesigned{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+<div class="facets-container{% if filter_type == 'drawer' %} facets-container-drawer{% endif %}">
   {%- if filter_type == 'vertical' or filter_type == 'horizontal' -%}
     <facet-filters-form class="facets small-hide">
       <form
-        id="FacetFiltersForm ssss"
+        id="FacetFiltersForm"
         class="{% if filter_type == 'horizontal' %}facets__form{% else %}facets__form-vertical{% endif %}"
       >
         {%- if results.terms -%}
@@ -59,27 +50,8 @@
                 {{ 'products.facets.filter_by_label' | t }}
               </h2>
             {%- endif -%}
-            {% comment %} Top pill: Filter icon + divider + results count (vertical only) {% endcomment %}
+            {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
             {%- if filter_type == 'vertical' -%}
-              <div class="facets__pill-bar">
-                <span class="facets__pill-bar-filter">
-                  {% render 'icon-filter' %}
-                  <span>{{ 'products.facets.filter_button' | t }}</span>
-                </span>
-                <span class="facets__pill-bar-divider" aria-hidden="true"></span>
-                <span class="facets__pill-bar-count" id="ProductCountPill">
-                  {%- if results.results_count -%}
-                    {{ 'templates.search.results_with_count' | t: terms: results.terms, count: results.results_count }}
-                  {%- elsif results.products_count == results.all_products_count -%}
-                    {{ 'products.facets.product_count_simple' | t: count: results.products_count }}
-                  {%- else -%}
-                    {{
-                      'products.facets.product_count'
-                      | t: product_count: results.products_count, count: results.all_products_count
-                    }}
-                  {%- endif -%}
-                </span>
-              </div>
               <div class="active-facets active-facets-desktop">
                 <div class="active-facets-vertical-filter">
                   {%- unless results.filters == empty -%}
@@ -139,52 +111,30 @@
             <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
             {% comment %} Filters for both horizontal and vertical filter {% endcomment %}
             {%- for filter in results.filters -%}
-              {% liquid
-                assign total_active_values = total_active_values | plus: filter.active_values.size
-                assign is_single_select = false
-                if filter_type == 'vertical' and forloop.index == 1
-                  assign is_single_select = true
-                endif
-                case filter.presentation
-                  when 'swatch'
-                    assign has_visual_display = true
-                    assign show_more_number = 15
-                    assign visual_layout_class = 'facets-layout-grid facets-layout-grid--' | append: filter.presentation
-                  else
-                    assign has_visual_display = false
-                    assign visual_layout_class = 'facets-layout-list'
-                    assign show_more_number = 10
-                endcase
-              %}
-
+              {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
               {% case filter.type %}
                 {% when 'boolean', 'list' %}
                   <details
                     id="Details-{{ forloop.index }}-{{ section.id }}"
-                    class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter{% if is_single_select %} facets__disclosure-vertical--categories{% endif %}"
+                    class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
                     data-index="{{ forloop.index }}"
                     {% if filter_type == 'vertical' and forloop.index == 1 %}
                       open
                     {% endif %}
                   >
                     <summary
-                      class="facets__summary caption-large focus-offset{% if is_single_select %} facets__summary--categories{% endif %}"
+                      class="facets__summary caption-large focus-offset"
                       aria-label="{{ filter.label }} ({{ 'products.facets.filters_selected.one' | t: count: filter.active_values.size }})"
                     >
                       <div>
-                        <span class="facets__summary-label">
+                        <span>
                           {{- filter.label | escape }}
-                          {%- if filter_type == 'vertical' and is_single_select == false -%}
+                          {%- if filter_type == 'vertical' -%}
                             <span class="facets__selected no-js-hidden{% if filter.active_values.size == 0 %} hidden{% endif %}">
                               ({{ filter.active_values.size }})</span
                             >
                           {%- endif -%}
                         </span>
-                        {%- if filter_type == 'vertical' and filter.operator == 'AND' -%}
-                          <span class="facets__and-helptext">
-                            {{ 'products.facets.filter_and_operator_subtitle' | t }}
-                          </span>
-                        {%- endif -%}
                         {% render 'icon-caret' %}
                       </div>
                     </summary>
@@ -194,16 +144,9 @@
                     >
                       {%- if filter_type != 'vertical' -%}
                         <div class="facets__header">
-                          <div>
-                            <span class="facets__selected no-js-hidden">
-                              {{- 'products.facets.filters_selected' | t: count: filter.active_values.size -}}
-                            </span>
-                            {%- if filter.operator == 'AND' -%}
-                              <span class="facets__and-helptext">
-                                {{ 'products.facets.filter_and_operator_subtitle' | t }}
-                              </span>
-                            {%- endif -%}
-                          </div>
+                          <span class="facets__selected no-js-hidden">
+                            {{- 'products.facets.filters_selected' | t: count: filter.active_values.size -}}
+                          </span>
                           <facet-remove>
                             <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link">
                               {{ 'products.facets.reset' | t }}
@@ -214,106 +157,55 @@
                       <fieldset class="facets-wrap parent-wrap {% if filter_type == 'vertical' %} facets-wrap-vertical{% endif %}">
                         <legend class="visually-hidden">{{ filter.label | escape }}</legend>
                         <ul
-                          class="{{ visual_layout_class }}{% if filter_type == 'vertical' %} facets__list--vertical{% else %} facets__list{% endif %} list-unstyled no-js-hidden{% if is_single_select %} facets__list--radio{% endif %}"
+                          class="{% if filter_type != 'vertical' %} facets__list{% endif %} list-unstyled no-js-hidden"
                           role="list"
                         >
-                          {%- liquid
-                            assign sorted_values = filter.values
-                            # Keep the selected values grouped together when operator is AND
-                            if filter.operator == 'AND'
-                              assign active_filter_values = filter.values | where: 'active', true
-                              assign inactive_filter_values = filter.values | where: 'active', false
-                              assign sorted_values = active_filter_values | concat: inactive_filter_values
-                            endif
-                          -%}
-                          {%- for value in sorted_values -%}
-                            {% liquid
-                              assign is_disabled = false
-                              if value.count == 0 and value.active == false
-                                assign is_disabled = true
-                              endif
-                            %}
-
-                            <li class="list-menu__item facets__item{% if forloop.index > show_more_number and filter_type == 'vertical' %} show-more-item hidden{% endif %}">
+                          {%- for value in filter.values -%}
+                            <li class="list-menu__item facets__item{% if forloop.index > 10 and filter_type == 'vertical' %} show-more-item hidden{% endif %}">
                               <label
                                 for="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
-                                class="facets__label facet-checkbox{% if is_disabled %} facet-checkbox--disabled disabled{% endif %}{% if has_visual_display %} visual-display-parent visual-display-parent--{{ filter.presentation }}{% endif %}{% if value.active %} active{% endif %}{% if is_single_select %} facet-checkbox--radio{% endif %}"
+                                class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}"
                               >
                                 <input
-                                  type="{% if is_single_select %}radio{% else %}checkbox{% endif %}"
+                                  type="checkbox"
                                   name="{{ value.param_name }}"
                                   value="{{ value.value }}"
                                   id="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
                                   {% if value.active %}
                                     checked
                                   {% endif %}
-                                  {% if is_disabled %}
+                                  {% if value.count == 0 and value.active == false %}
                                     disabled
                                   {% endif %}
                                 >
 
-                                {% if has_visual_display %}
-                                  <div class="facets__visual-display-wrapper">
-                                    {% render 'visual-display',
-                                      type: value.display.type,
-                                      value: value.display.value,
-                                      presentation: filter.presentation
-                                    %}
-                                  </div>
-                                {% elsif is_single_select %}
-                                  <svg
-                                    class="icon icon-radio-outer"
-                                    width="1.6rem"
-                                    height="1.6rem"
-                                    viewBox="0 0 16 16"
-                                    aria-hidden="true"
-                                    focusable="false"
-                                  >
-                                    <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1"></circle>
-                                  </svg>
-
-                                  <svg
-                                    aria-hidden="true"
-                                    class="icon icon-radio-inner"
-                                    width="1.6rem"
-                                    height="1.6rem"
-                                    viewBox="0 0 16 16"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <circle cx="8" cy="8" r="4" fill="currentColor"></circle>
-                                  </svg>
-                                {% else %}
-                                  <svg
-                                    width="1.6rem"
-                                    height="1.6rem"
-                                    viewBox="0 0 16 16"
-                                    aria-hidden="true"
-                                    focusable="false"
-                                  >
-                                    <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
-                                  </svg>
-
-                                  <svg
-                                    aria-hidden="true"
-                                    class="icon icon-checkmark"
-                                    width="1.1rem"
-                                    height="0.7rem"
-                                    viewBox="0 0 11 7"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1"
-                                      stroke="currentColor"
-                                      stroke-width="1.75"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round" />
-                                  </svg>
-                                {% endif %}
-
-                                <span class="facet-checkbox__text" aria-hidden="true">
-                                  {{- value.label | escape }}{% unless is_single_select %} ({{ value.count }}){% endunless %}</span
+                                <svg
+                                  width="1.6rem"
+                                  height="1.6rem"
+                                  viewBox="0 0 16 16"
+                                  aria-hidden="true"
+                                  focusable="false"
                                 >
+                                  <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
+                                </svg>
+
+                                <svg
+                                  aria-hidden="true"
+                                  class="icon icon-checkmark"
+                                  width="1.1rem"
+                                  height="0.7rem"
+                                  viewBox="0 0 11 7"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1"
+                                    stroke="currentColor"
+                                    stroke-width="1.75"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                </svg>
+
+                                <span aria-hidden="true">{{ value.label | escape }} ({{ value.count }})</span>
                                 <span class="visually-hidden">
                                   {{- value.label | escape }} (
                                   {%- if value.count == 1 -%}
@@ -339,7 +231,7 @@
                                 class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}"
                               >
                                 <input
-                                  type="{% if is_single_select %}radio{% else %}checkbox{% endif %}"
+                                  type="checkbox"
                                   name="{{ value.param_name }}"
                                   value="{{ value.value }}"
                                   id="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}-no-js"
@@ -392,7 +284,7 @@
                           {%- endfor -%}
                         </ul>
                       </fieldset>
-                      {%- if filter.values.size > show_more_number and filter_type == 'vertical' -%}
+                      {%- if filter.values.size > 10 and filter_type == 'vertical' -%}
                         <show-more-button>
                           <button
                             class="button-show-more link underlined-link no-js-hidden"
@@ -412,7 +304,7 @@
                   </details>
                 {% when 'price_range' %}
                   {% liquid
-                    assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,UYU,VES,VND' | split: ','
+                    assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
                     assign uses_comma_decimals = false
                     if currencies_using_comma_decimals contains cart.currency.iso_code
                       assign uses_comma_decimals = true
@@ -450,7 +342,7 @@
                         {%- endif -%}
                       </div>
                       <price-range class="facets__price">
-                        <span class="field-currency">{{ currency_symbol }}</span>
+                        <span class="field-currency">{{ cart.currency.symbol }}</span>
                         <div class="field">
                           <input
                             class="field__input"
@@ -477,7 +369,7 @@
                           </label>
                         </div>
                         {%- if filter_type != 'vertical' -%}
-                          <span class="field-currency">{{ currency_symbol }}</span>
+                          <span class="field-currency">{{ cart.currency.symbol }}</span>
                         {%- endif -%}
                         <div class="field">
                           <input
@@ -621,7 +513,17 @@
                 {%- endif -%}
               </span>
             </h2>
-            {%- render 'loading-spinner' -%}
+            <div class="loading-overlay__spinner">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="spinner"
+                viewBox="0 0 66 66"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
           </div>
         {%- endif -%}
       </form>
@@ -739,17 +641,6 @@
             <div class="mobile-facets__main has-submenu gradient">
               {%- if enable_filtering -%}
                 {%- for filter in results.filters -%}
-                  {% liquid
-                    case filter.presentation
-                      when 'swatch'
-                        assign has_visual_display = true
-                        assign visual_layout_class = 'facets-layout-grid facets-layout-grid--' | append: filter.presentation
-                      else
-                        assign has_visual_display = false
-                        assign visual_layout_class = 'facets-layout-list'
-                    endcase
-                  %}
-
                   {% case filter.type %}
                     {% when 'boolean', 'list' %}
                       <details
@@ -774,35 +665,14 @@
                             type="button"
                           >
                             {% render 'icon-arrow' %}
-                            <span>{{ filter.label | escape }}</span>
-                            {%- if filter.operator == 'AND' -%}
-                              <span class="facets__and-helptext">
-                                {{ 'products.facets.filter_and_operator_subtitle' | t }}
-                              </span>
-                            {%- endif -%}
+                            {{ filter.label | escape }}
                           </button>
-                          <ul class="{{ visual_layout_class }} mobile-facets__list list-unstyled" role="list">
-                            {%- liquid
-                              assign sorted_values = filter.values
-                              # Keep the selected values grouped together when operator is AND
-                              if filter.operator == 'AND'
-                                assign active_filter_values = filter.values | where: 'active', true
-                                assign inactive_filter_values = filter.values | where: 'active', false
-                                assign sorted_values = active_filter_values | concat: inactive_filter_values
-                              endif
-                            -%}
-                            {%- for value in sorted_values -%}
-                              {% liquid
-                                assign is_disabled = false
-                                if value.count == 0 and value.active == false
-                                  assign is_disabled = true
-                                endif
-                              %}
-
+                          <ul class="mobile-facets__list list-unstyled" role="list">
+                            {%- for value in filter.values -%}
                               <li class="mobile-facets__item list-menu__item">
                                 <label
                                   for="Filter-{{ filter.param_name | escape }}-mobile-{{ forloop.index }}"
-                                  class="facets__label mobile-facets__label{% if is_disabled %} mobile-facets__label--disabled disabled{% endif %}{% if has_visual_display %} visual-display-parent visual-display-parent--{{ filter.presentation }}{% endif %}{% if value.active %} active{% endif %}"
+                                  class="mobile-facets__label{% if value.count == 0 and value.active == false %} mobile-facets__label--disabled{% endif %}"
                                 >
                                   <input
                                     class="mobile-facets__checkbox"
@@ -813,48 +683,36 @@
                                     {% if value.active %}
                                       checked
                                     {% endif %}
-                                    {% if is_disabled %}
+                                    {% if value.count == 0 and value.active == false %}
                                       disabled
                                     {% endif %}
                                   >
 
-                                  {% if has_visual_display %}
-                                    <div class="facets__visual-display-wrapper">
-                                      {% render 'visual-display',
-                                        type: value.display.type,
-                                        value: value.display.value,
-                                        presentation: filter.presentation
-                                      %}
-                                    </div>
-                                  {% else %}
-                                    <span class="mobile-facets__highlight"></span>
+                                  <span class="mobile-facets__highlight"></span>
 
-                                    <svg
-                                      width="1.6rem"
-                                      height="1.6rem"
-                                      viewBox="0 0 16 16"
-                                      aria-hidden="true"
-                                      focusable="false"
-                                    >
-                                      <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
-                                    </svg>
-
-                                    <svg
-                                      aria-hidden="true"
-                                      class="icon icon-checkmark"
-                                      width="1.1rem"
-                                      height="0.7rem"
-                                      viewBox="0 0 11 7"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                  {% endif %}
-
-                                  <span class="facet-checkbox__text" aria-hidden="true">
-                                    {{- value.label | escape }} ({{ value.count }})</span
+                                  <svg
+                                    width="1.6rem"
+                                    height="1.6rem"
+                                    viewBox="0 0 16 16"
+                                    aria-hidden="true"
+                                    focusable="false"
                                   >
+                                    <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
+                                  </svg>
+
+                                  <svg
+                                    aria-hidden="true"
+                                    class="icon icon-checkmark"
+                                    width="1.1rem"
+                                    height="0.7rem"
+                                    viewBox="0 0 11 7"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+
+                                  <span aria-hidden="true">{{ value.label | escape }} ({{ value.count }})</span>
                                   <span class="visually-hidden">
                                     {{- value.label | escape }} (
                                     {%- if value.count == '1' -%}
@@ -891,13 +749,6 @@
                         </div>
                       </details>
                     {% when 'price_range' %}
-                      {% liquid
-                        assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,UYU,VES,VND' | split: ','
-                        assign uses_comma_decimals = false
-                        if currencies_using_comma_decimals contains cart.currency.iso_code
-                          assign uses_comma_decimals = true
-                        endif
-                      %}
                       <details
                         id="Details-Mobile-{{ forloop.index }}-{{ section.id }}"
                         class="mobile-facets__details js-filter"
@@ -929,7 +780,7 @@
                           </p>
 
                           <price-range class="facets__price">
-                            <span class="field-currency">{{ currency_symbol }}</span>
+                            <span class="field-currency">{{ cart.currency.symbol }}</span>
                             <div class="field">
                               <input
                                 class="field__input"
@@ -957,7 +808,7 @@
                               </label>
                             </div>
 
-                            <span class="field-currency">{{ currency_symbol }}</span>
+                            <span class="field-currency">{{ cart.currency.symbol }}</span>
                             <div class="field">
                               <input
                                 class="field__input"
@@ -1189,7 +1040,17 @@
         {%- endif -%}
       </span>
     </h2>
-    {%- render 'loading-spinner' -%}
+    <div class="loading-overlay__spinner">
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="spinner"
+        viewBox="0 0 66 66"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+      </svg>
+    </div>
   </div>
   {%- if filter_type == 'drawer' -%}
     <facet-filters-form class="facets facets-pill small-hide">
@@ -1242,134 +1103,3 @@
     </facet-filters-form>
   {%- endif -%}
 </div>
-
-{% comment %} ===== Redesigned vertical facets styling (matches new design) ===== {% endcomment %}
-{% if filter_type == 'vertical' %}
-<style>
-  .facets-container--redesigned {
-    --facet-accent-color: #a9814f;
-    --facet-accent-color-light: #d8c3a5;
-    --facet-heading-color: #1a1a1a;
-    --facet-body-color: #4d4d4d;
-    --facet-divider-color: #e6e6e6;
-    --facet-count-color: #8a8a8a;
-    --facet-pill-border: #e2e2e2;
-    max-width: 34rem;
-  }
-
-  /* Top pill: Filter icon + divider + results count */
-  .facets-container--redesigned .facets__pill-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    border: 0.1rem solid var(--facet-pill-border);
-    border-radius: 3rem;
-    padding: 0.8rem 1.6rem;
-    margin-bottom: 2rem;
-  }
-  .facets-container--redesigned .facets__pill-bar-filter {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-weight: 600;
-    color: var(--facet-heading-color);
-  }
-  .facets-container--redesigned .facets__pill-bar-filter svg {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  .facets-container--redesigned .facets__pill-bar-divider {
-    width: 0.1rem;
-    height: 1.6rem;
-    background: var(--facet-pill-border);
-  }
-  .facets-container--redesigned .facets__pill-bar-count {
-    color: var(--facet-count-color);
-    font-size: 1.4rem;
-  }
-
-  /* Section dividers between each filter group */
-  .facets-container--redesigned .facets__disclosure-vertical {
-    border-bottom: 0.1rem solid var(--facet-divider-color) !important;
-    padding: 1.6rem 0 !important;
-    margin: 0 !important;
-  }
-  .facets-container--redesigned .facets__disclosure-vertical:first-of-type {
-    padding-top: 0 !important;
-  }
-  .facets-container--redesigned .facets__disclosure-vertical:last-of-type {
-    border-bottom: 0.1rem solid var(--facet-divider-color) !important;
-  }
-
-  /* Default (collapsed) section heading style: bold black + chevron */
-  .facets-container--redesigned .facets__summary {
-    color: var(--facet-heading-color);
-    font-weight: 700;
-    font-size: 1.7rem;
-    cursor: pointer;
-  }
-  .facets-container--redesigned .facets__summary > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .facets-container--redesigned details[open] > .facets__summary svg {
-    transform: rotate(180deg);
-  }
-
-  /* Categories section: gold/brown heading, no count badge */
-  .facets-container--redesigned .facets__summary--categories {
-    color: var(--facet-accent-color);
-    font-weight: 700;
-  }
-
-  /* Radio-styled options (Categories) */
-  .facets-container--redesigned .facets__list--radio {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-    margin-top: 1.2rem;
-  }
-  .facets-container--redesigned .facet-checkbox--radio {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: var(--facet-body-color);
-    font-size: 1.5rem;
-  }
-  .facets-container--redesigned .facet-checkbox--radio input[type='radio'] {
-    position: absolute;
-    opacity: 0;
-    width: 1px;
-    height: 1px;
-  }
-  .facets-container--redesigned .facet-checkbox--radio .icon-radio-outer {
-    color: var(--facet-accent-color-light);
-  }
-  .facets-container--redesigned .facet-checkbox--radio .icon-radio-inner {
-    display: none;
-    color: var(--facet-accent-color);
-    margin-left: -1.6rem;
-  }
-  .facets-container--redesigned .facet-checkbox--radio input[type='radio']:checked ~ .icon-radio-outer {
-    color: var(--facet-accent-color);
-  }
-  .facets-container--redesigned .facet-checkbox--radio input[type='radio']:checked ~ .icon-radio-inner {
-    display: block;
-  }
-  .facets-container--redesigned .facet-checkbox--radio.active {
-    color: var(--facet-heading-color);
-  }
-
-  /* Fix faded / invisible currency symbol (₹) in price range fields */
-  .facets-container--redesigned .field-currency {
-    color: var(--facet-heading-color) !important;
-    opacity: 1 !important;
-    font-weight: 600;
-    font-size: 1.5rem;
-    font-family: Arial, 'Noto Sans', sans-serif;
-    display: inline-flex;
-    align-items: center;
-  }
-</style>
-{% endif %}

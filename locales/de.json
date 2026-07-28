@@ -7,7 +7,7 @@
       "login_form_password_placeholder": "Dein Passwort",
       "login_form_error": "Falsches Passwort!",
       "login_form_submit": "Eingeben",
-      "admin_link_html": "Bist du der Shop-Inhaber? <a href=\"/admin\" class=\"link underlined-link\">Hier einloggen</a>",
+      "admin_link_html": "Bist du der Shop-Inhaber? <a href=\"\/admin\" class=\"link underlined-link\">Hier einloggen<\/a>",
       "powered_by_shopify_html": "Dieser Shop wird unterstützt von {{ shopify }}"
     },
     "social": {
@@ -109,6 +109,7 @@
       "add_to_cart": "In den Warenkorb legen",
       "description": "Beschreibung",
       "on_sale": "Sale",
+      "product_variants": "Produktvarianten",
       "quantity": {
         "label": "Anzahl",
         "input_label": "Anzahl von {{ product }}",
@@ -117,14 +118,13 @@
         "minimum_of": "Mindestens {{ quantity }}",
         "maximum_of": "Maximal {{ quantity }}",
         "multiples_of": "In {{ quantity }}er Schritten",
-        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> im Warenkorb",
-        "note": "Mengenregeln anzeigen"
+        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}<\/span> im Warenkorb"
       },
       "price": {
         "from_price_html": "Von {{ price }}",
         "regular_price": "Normaler Preis",
         "sale_price": "Verkaufspreis",
-        "unit_price": "Stückpreis"
+        "unit_price": "Grundpreis"
       },
       "share": "Dieses Produkt teilen",
       "sold_out": "Ausverkauft",
@@ -137,8 +137,8 @@
         "view_store_info": "Shop-Informationen anzeigen",
         "check_other_stores": "Verfügbarkeit in anderen Shops überprüfen",
         "pick_up_available": "Abholung verfügbar",
-        "pick_up_available_at_html": "Abholung bei <span class=\"color-foreground\">{{ location_name }}</span> verfügbar",
-        "pick_up_unavailable_at_html": "Abholung bei <span class=\"color-foreground\">{{ location_name }}</span> derzeit nicht verfügbar",
+        "pick_up_available_at_html": "Abholung bei <span class=\"color-foreground\">{{ location_name }}<\/span> verfügbar",
+        "pick_up_unavailable_at_html": "Abholung bei <span class=\"color-foreground\">{{ location_name }}<\/span> derzeit nicht verfügbar",
         "unavailable": "Verfügbarkeit für Abholungen konnte nicht geladen werden",
         "refresh": "Aktualisieren"
       },
@@ -154,7 +154,7 @@
       },
       "view_full_details": "Vollständige Details anzeigen",
       "include_taxes": "inkl. MwSt.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Versand</a> wird beim Checkout berechnet",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Versand<\/a> wird beim Checkout berechnet",
       "choose_options": "Optionen auswählen",
       "choose_product_options": "Optionen für {{ product_name }} auswählen",
       "value_unavailable": "{{ option_value }} – nicht verfügbar",
@@ -165,15 +165,7 @@
       "inventory_low_stock_show_count": "Niedriger Lagerbestand: {{ quantity }} verbleibend",
       "inventory_out_of_stock": "Nicht vorrätig",
       "inventory_out_of_stock_continue_selling": "Auf Lager",
-      "sku": "SKU",
-      "volume_pricing": {
-        "title": "Volumenabhängige Preisgestaltung",
-        "note": "Volumenabhängige Preisgestaltung verfügbar",
-        "minimum": "{{ quantity }}+",
-        "price_at_each": "bei {{ price }}/Stück",
-        "price_range": "{{ minimum }}–{{ maximum }}"
-      },
-      "product_variants": "Produktvarianten"
+      "sku": "SKU"
     },
     "modal": {
       "label": "Medien-Galerie"
@@ -206,8 +198,7 @@
       "clear_filter": "Filter entfernen",
       "filter_selected_accessibility": "{{ type }} ({{ count }} Filter ausgewählt)",
       "show_more": "Mehr anzeigen",
-      "show_less": "Weniger anzeigen",
-      "filter_and_operator_subtitle": "Allen entsprechen"
+      "show_less": "Weniger anzeigen"
     }
   },
   "templates": {
@@ -273,15 +264,17 @@
       "title": "Dein Warenkorb",
       "caption": "Artikel im Warenkorb",
       "remove_title": "{{ title }} entfernen",
+      "subtotal": "Zwischensumme",
+      "new_subtotal": "Neue Zwischensumme",
       "note": "Spezielle Bestellanweisungen",
       "checkout": "Auschecken",
       "empty": "Dein Warenkorb ist leer",
       "cart_error": "Beim Aktualisieren deines Warenkorbs ist ein Fehler aufgetreten. Bitte versuche es erneut.",
       "cart_quantity_error_html": "Du kannst deinem Warenkorb nur {{ quantity }} Stück dieses Artikels hinzufügen.",
-      "taxes_and_shipping_policy_at_checkout_html": "Steuern, Rabatte und <a href=\"{{ link }}\">Versand</a> werden beim Checkout berechnet",
-      "taxes_included_but_shipping_at_checkout": "Inklusive Steuern, Versand und Rabatte werden beim Checkout berechnet",
-      "taxes_included_and_shipping_policy_html": "Inklusive Steuern. <a href=\"{{ link }}\">Versand</a> und Rabatte werden beim Checkout berechnet.",
-      "taxes_and_shipping_at_checkout": "Steuern, Rabatte und Versand werden beim Checkout berechnet",
+      "taxes_and_shipping_policy_at_checkout_html": "Steuern und <a href=\"{{ link }}\">Versand<\/a> werden beim Checkout berechnet",
+      "taxes_included_but_shipping_at_checkout": "Inklusive Steuern, Versand wird beim Checkout berechnet",
+      "taxes_included_and_shipping_policy_html": "Inklusive Steuern. <a href=\"{{ link }}\">Versand <\/a> wird beim Checkout berechnet",
+      "taxes_and_shipping_at_checkout": "Steuern und Versand werden beim Checkout berechnet",
       "headings": {
         "product": "Produkt",
         "price": "Preis",
@@ -292,10 +285,8 @@
       "update": "Aktualisieren",
       "login": {
         "title": "Hast du ein Konto?",
-        "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Logge dich ein</a>, damit es beim Checkout schneller geht."
-      },
-      "estimated_total": "Geschätzte Gesamtkosten",
-      "new_estimated_total": "Neuer geschätzter Gesamtbetrag"
+        "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Logge dich ein<\/a>, damit es beim Checkout schneller geht."
+      }
     },
     "footer": {
       "payment": "Zahlungsmethoden"
@@ -315,7 +306,7 @@
     "collection_template": {
       "title": "Kategorie",
       "empty": "Keine Produkte gefunden",
-      "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle</a>"
+      "use_fewer_filters_html": "Verwende weniger Filter oder <a class=\"{{ class }}\" href=\"{{ link }}\">entferne alle<\/a>"
     },
     "video": {
       "load_video": "Video laden: {{ description }}"
@@ -331,41 +322,13 @@
     },
     "page": {
       "title": "Seitentitel"
-    },
-    "announcements": {
-      "previous_announcement": "Vorherige Ankündigung",
-      "next_announcement": "Nächste Ankündigung",
-      "carousel": "Karussell",
-      "announcement": "Ankündigung",
-      "announcement_bar": "Ankündigungsleiste"
-    },
-    "quick_order_list": {
-      "product_total": "Produktzwischensumme",
-      "view_cart": "Warenkorb ansehen",
-      "each": "{{ money }}/Stück",
-      "product": "Produkt",
-      "variant": "Variante",
-      "variant_total": "Varianten insgesamt",
-      "items_added": {
-        "one": "{{ quantity }} Artikel hinzugefügt",
-        "other": "{{ quantity }} Artikel hinzugefügt"
-      },
-      "items_removed": {
-        "one": "{{ quantity }} Artikel entfernt",
-        "other": "{{ quantity }} Artikel entfernt"
-      },
-      "product_variants": "Produktvarianten",
-      "total_items": "Artikel gesamt",
-      "remove_all_items_confirmation": "Alle {{ quantity }} Artikel aus deinem Warenkorb entfernen?",
-      "remove_all": "Alle entfernen",
-      "cancel": "Abbrechen"
     }
   },
   "localization": {
-    "country_label": "Land/Region",
+    "country_label": "Land\/Region",
     "language_label": "Sprache",
     "update_language": "Sprache aktualisieren",
-    "update_country": "Land/Region aktualisieren"
+    "update_country": "Land\/Region aktualisieren"
   },
   "customer": {
     "account": {
@@ -394,8 +357,8 @@
       "address1": "Adresse 1",
       "address2": "Adresse 2",
       "city": "Ort",
-      "country": "Land/Region",
-      "province": "Bundesland/Provinz",
+      "country": "Land\/Region",
+      "province": "Bundesland\/Provinz",
       "zip": "PLZ",
       "phone": "Telefonnummer",
       "set_default": "Als Standard-Adresse festlegen",
@@ -496,17 +459,13 @@
     "form": {
       "checkbox": "Ich möchte dies als Geschenk senden",
       "email_label": "Empfänger E-Mail",
+      "email_label_optional": "E-Mail-Adresse des Empfängers (optional)",
       "email": "E-Mail",
       "name_label": "Name des Empfängers (optional)",
       "name": "Name",
       "message_label": "Nachricht (optional)",
       "message": "Nachricht",
-      "max_characters": "Maximal {{ max_chars }} Zeichen",
-      "email_label_optional_for_no_js_behavior": "E-Mail-Adresse des Empfängers (optional)",
-      "send_on": "JJJJ-MM-TT",
-      "send_on_label": "Senden am (optional)",
-      "expanded": "Formular für den Empfänger des Geschenkgutscheins erweitert",
-      "collapsed": "Formular für den Empfänger des Geschenkgutscheins minimiert"
+      "max_characters": "Maximal {{ max_chars }} Zeichen"
     }
   }
 }
