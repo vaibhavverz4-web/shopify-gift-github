@@ -6,9 +6,7 @@
   text-align: center;
 }
 
-sticky-header.header-wrapper.color-background-1.gradient.header-wrapper--border-bottom {
-    background: red;
-}
+
 
 .accordion-content{
   display:none;
