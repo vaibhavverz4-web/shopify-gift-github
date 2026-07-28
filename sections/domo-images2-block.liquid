@@ -1,0 +1,176 @@
+<section class="welcome-section image-{{ section.settings.image_position }} color-{{ section.settings.color_scheme }}">
+  <div class="page-width grid grid--2-col">
+
+    <div class="grid__item image-block">
+      <div class="welcome-image-wrapper {{ section.settings.welcome_image_height }}">
+        {% if section.settings.welcome_image != blank %}
+          <img src="{{ section.settings.welcome_image | image_url: width: 800 }}" alt="{{ section.settings.welcome_image.alt | default: '' }}" class="welcome-image"/>
+        {% endif %}
+      </div>
+    </div>
+
+
+ <div class="s">
+    {% for block in section.blocks %}
+	
+      {% case block.type %}
+
+    
+        {% when 'heading' %}
+          <div class="grid__item text-block {{ section.settings.desktop_content_alignment }}">
+            <h5 class="welcome-heading" style="font-size: {{ block.settings.heading_font_size | default: '28' }}px;">
+              {{ block.settings.welcome_heading }}
+            </h5>
+          </div>
+
+        {% when 'text' %}
+          <div class="grid__item text-block {{ section.settings.desktop_content_alignment }}">
+            <div class="welcome-text">
+              {{ block.settings.welcome_text }}
+            </div>
+          </div>
+        {% else %}
+		
+          <!-- unknown block type — nothing to render -->
+      {% endcase %}
+	  
+    {% endfor %}
+
+</div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Welcome Section two",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+      "id": "welcome_image",
+      "label": "Welcome Image"
+    },
+    {
+      "type": "select",
+      "id": "welcome_image_height",
+      "label": "Image height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Desktop content alignment",
+      "options": [
+        { "value": "text-left", "label": "Left" },
+        { "value": "text-center", "label": "Center" },
+        { "value": "text-right", "label": "Right" }
+      ],
+      "default": "text-left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "welcome_heading",
+          "label": "Heading Text",
+          "default": "Your Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_font_size",
+          "label": "Heading Font Size",
+          "options": [
+            { "value": "20", "label": "Small" },
+            { "value": "28", "label": "Medium" },
+            { "value": "36", "label": "Large" }
+          ],
+          "default": "28"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "welcome_text",
+          "label": "Text",
+          "default": "<p>We began our journey as a trusted seller on eBay, quickly earning a reputation for reliable service and exceptional customer care. Today, we proudly operate our own online store, where we remain dedicated to providing friendly, reliable service and a carefully curated selection for toy collectors around the world.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Welcome Section two"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.welcome-section {
+  padding: 60px 20px;
+}
+.welcome-section .grid {
+  align-items: center;
+}
+.welcome-heading {
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.welcome-text p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+.welcome-image {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Height options */
+.welcome-image-wrapper.adapt img { height: auto; }
+.welcome-image-wrapper.small img { height: 200px; object-fit: cover; }
+.welcome-image-wrapper.medium img { height: 400px; object-fit: cover; }
+.welcome-image-wrapper.large img { height: 600px; object-fit: cover; }
+
+/* Alignment handle */
+.grid__item.text-left { text-align: left; }
+.grid__item.text-center { text-align: center; }
+.grid__item.text-right { text-align: right; }
+
+.welcome-section.image-left .image-block { order: 1; }
+.welcome-section.image-left .text-block  { order: 2; }
+
+/* Image right */
+.welcome-section.image-right .image-block { order: 2; }
+.welcome-section.image-right .text-block  { order: 1; }
+</style>

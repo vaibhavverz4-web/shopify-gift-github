@@ -1,0 +1,106 @@
+
+
+<div class="custom-section">
+
+  {% for block in section.blocks %}
+  
+			{% case block.type %}
+		
+			  {% when 'heading' %}
+				<h2>{{ block.settings.heading_text }}</h2>
+				
+			  {% when 'text' %}
+				<p>{{ block.settings.paragraph_text }}</p>
+				
+			  {% when 'button' %}
+				<a href="{{ block.settings.button_link }}" class="btn">{{ block.settings.button_label }}</a>
+				
+			   {% when 'image' %}
+				{% if block.settings.image != blank %}
+				  <img src="{{ block.settings.image | img_url: 'medium' }}" alt="Block Image">
+				{% endif %}
+		
+		
+		{% endcase %}
+	
+  {% endfor %}
+  
+</div>
+
+
+{% schema %}
+{
+  "name": "Custom Section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_text",
+          "label": "Heading Text",
+          "default": "Your Heading"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Paragraph",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "paragraph_text",
+          "label": "Paragraph Text",
+          "default": "Your paragraph text goes here."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Click me"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Choose image"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Custom Section"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+
+
+{% stylesheet %}
+<style>
+
+</style>
+{% endstylesheet %}

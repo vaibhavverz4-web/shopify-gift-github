@@ -1,0 +1,216 @@
+{% stylesheet %}
+.shop-by-category {
+  padding: 40px 0;
+}
+
+.shop-by-category__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.shop-by-category__slider {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.shop-by-category__card {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+  min-width: 180px;
+}
+
+.shop-by-category__card img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+{% endstylesheet %}
+
+
+
+<section class="shop-by-category {% if section.settings.layout_width == 'full_width' %}full-width{% else %}container{% endif %}">
+
+
+	  <div class="shop-by-category__header">
+		<h2>{{ section.settings.heading }}</h2>
+		
+		{% if section.settings.view_all_link != blank %}
+		  <a href="{{ section.settings.view_all_link }}">View All Collections</a>
+		{% endif %}
+	  </div>
+	  
+	  
+
+	{% if section.settings.enable_slider %}
+	
+		<!-- Slider Mode -->
+		<div class="shop-by-category__slider slider-js">
+		  {% for block in section.blocks %}
+			<div class="shop-by-category__card">
+			  {% if block.settings.image != blank %}
+				<img src="{{ block.settings.image | img_url: 'medium' }}" alt="{{ block.settings.title }}">
+			  {% endif %}
+			  <p>{{ block.settings.title }}</p>
+			</div>
+		  {% endfor %}
+		</div>
+		
+		{% else %}
+	
+	
+		<!-- Block/Grid Mode -->
+		
+		<div class="shop-by-category__slider">
+		  {% for block in section.blocks %}
+			<div class="shop-by-category__card">
+			  {% if block.settings.image != blank %}
+				<img src="{{ block.settings.image | img_url: 'medium' }}" alt="{{ block.settings.title }}">
+			  {% endif %}
+			  <p>{{ block.settings.title }}</p>
+			</div>
+		  {% endfor %}
+		</div>
+		
+  {% endif %}
+	
+	
+  
+  
+</section>
+
+
+
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function () {
+    function initCategorySlider() {
+      let $slider = $('.slider-js');
+
+      // Destroy old slick instance first (avoid duplicate init)
+      if ($slider.hasClass('slick-initialized')) {
+        $slider.slick('unslick');
+      }
+
+      // Desktop ma (>= 1025px)
+      {% if section.settings.enable_slider %}
+        // Agar admin panel ma slider enable che to desktop par pan slider
+        $slider.slick({
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          infinite: false,
+          arrows: true,
+          responsive: [
+            {
+              breakpoint: 768,
+              settings: { slidesToShow: 2 }
+            },
+            {
+              breakpoint: 480,
+              settings: { slidesToShow: 1 }
+            }
+          ]
+        });
+      {% else %}
+        // Agar slider disable che to desktop par grid (no slider)
+        // but mobile ma (<768px) slider auto apply karvo
+        if (window.innerWidth < 768) {
+          $slider.slick({
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            infinite: false,
+            arrows: true,
+            responsive: [
+              {
+                breakpoint: 480,
+                settings: { slidesToShow: 1 }
+              }
+            ]
+          });
+        }
+      {% endif %}
+    }
+
+    // Init on page load
+    initCategorySlider();
+
+    // Re-init on window resize (helpful for responsive)
+    window.addEventListener('resize', function () {
+      initCategorySlider();
+    });
+  });
+{% endjavascript %}
+
+
+
+{% schema %}
+{
+  "name": "Shop by Category",
+  "settings": [
+	  {
+	  "type": "checkbox",
+	  "id": "enable_slider",
+	  "label": "Enable Slider",
+	  "default": false
+	},
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Collections Link",
+      "default": "/collections"
+    },
+    {
+      "type": "select",
+      "id": "layout_width",
+      "label": "Layout Width",
+      "default": "container",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "full_width", "label": "Full Width" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Category 01"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Shop by Category",
+      "category": "Custom Sections",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

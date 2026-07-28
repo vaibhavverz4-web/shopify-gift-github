@@ -1,0 +1,261 @@
+
+
+<div class="{% if section.settings.layout_width == 'full_width' %} full-width {% else %} container {% endif %}" >
+
+<div class="dynamic-banner-grid   " >
+  {% for block in section.blocks %}
+  
+    <div class="banner-card color-{{ section.block.main_color_scheme }}">
+	
+      {% if block.settings.image %}
+        <img src="{{ block.settings.image | img_url: '1200x' }}" alt="{{ block.settings.heading }}">
+      {% endif %}
+	  
+	  
+	  <div class="banner-overlay" style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"> </div>
+	  
+	  
+      <div class="banner-content">
+        {% if block.settings.sub-texta != blank %}
+          <span class="sub-text-color">{{ block.settings.sub-texta}}</span>
+        {% endif %}
+		
+		
+		  {% if block.settings.rte_texts != blank %}
+			  <h2 class="{{ block.settings.heading_font_size}}"> {{ block.settings.rte_texts }} </h2>
+		  {% endif %}
+
+		
+        <p>{{ block.settings.subtext }}</p>
+        {% if block.settings.button_link %}
+          <a href="{{ block.settings.button_link }}" class="solid-button">{{ block.settings.button_text }}</a>
+        {% endif %}
+      </div>
+	  
+    </div>
+	
+  {% endfor %}
+</div>
+
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Dynamic Banner Cards",
+  "max_blocks": 4,
+   "settings": [
+    
+    {
+    "type": "select",
+    "id": "layout_width",
+    "label": "Layout Width",
+    "default": "container",
+    "options": [
+      { "value": "container", "label": "Container (Dynamic)" },
+      { "value": "full_width", "label": "Full Width" }
+    ]
+  }
+
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Banner Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background Image"
+        },
+        {
+        "type": "color_scheme",
+        "id": "main_color_scheme",
+        "label": "Main Color Scheme"
+      },
+     
+		{
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay Opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 40,
+          "unit": "%"
+        },
+       
+        {
+          "type": "text",
+          "id": "sub-texta",
+          "label": "Eyebrow Text (Small Heading)"
+        },
+        {
+          "type": "text",
+          "id": "rte_texts",
+          "label": "Main Heading"
+        },
+        {
+      "type": "select",
+      "id": "heading_font_size",
+      "label": "Heading Font Size",
+      "options": [
+        { "value": "Small", "label": "Small" },
+        { "value": "Medium", "label": "Medium" },
+        { "value": "Large", "label": "Large" }
+      ],
+      "default": "Small"
+      },
+        {
+          "type": "textarea",
+          "id": "subtext",
+          "label": "Sub Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View Products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dynamic Banner Cards"
+    }
+  ]
+}
+{% endschema %}
+
+
+<style>
+
+  
+  .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.full-width {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.Small{font-size: 20px;}
+.Medium{font-size: 30px;}
+.Large{font-size: 40px;}
+
+
+a.solid-button {
+    padding: 10px 30px;
+    display: inline-block;
+    width: auto;    max-width: fit-content;
+}
+
+.solid-button{Background:rgb(var(--color-button)); color:rgb(var(--color-button-text)); border:1px solid rgb(var(--color-button-border))}
+
+.solid-button:hover{Background:rgb(var(--color-button-hover)); color:rgb(var(--color-button-text-hover)); border:1px solid rgb(var(--color-button-border-hover))}
+ 
+
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.dynamic-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.banner-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.banner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+
+.banner-card:hover img {
+  transform: scale(1.05);
+}
+
+.banner-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+
+  background: rgba(0,0,0,0.4);
+}
+
+.banner-content .eyebrow {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+ 
+}
+
+.banner-content h2 {
+ 
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.banner-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.banner-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .3s ease, color .3s ease;
+}
+
+.banner-btn:hover {
+  color: #000;
+}
+
+
+</style>
+
+
+
+
+
+
+
+

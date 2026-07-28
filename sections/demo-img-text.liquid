@@ -1,0 +1,163 @@
+<section class="welcome-section image-{{ section.settings.image_position }} color-{{ section.settings.color_scheme }}">
+  <div class="page-width grid grid--2-col">
+    <div class="grid__item image-block">
+      <div class="welcome-image-wrapper {{ section.settings.welcome_image_height }}">
+        <img src="{{ section.settings.welcome_image | image_url: width: 800 }}" alt="" class="welcome-image"/>
+      </div>
+    </div>
+    <div class="grid__item text-block">
+
+      <h2 class="welcome-heading {{ section.settings.heading_font_size }}">
+        {{ section.settings.welcome_heading }}
+      </h2>
+
+      <div class="welcome-text">
+        {{ section.settings.welcome_text }}
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": "Welcome Section",
+  "settings": [
+	{
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+	{
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+      "id": "welcome_image",
+      "label": "Welcome Image"
+    },
+    {
+      "type": "select",
+      "id": "welcome_image_height",
+      "label": "Image height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "text",
+      "id": "welcome_heading",
+      "label": "Heading",
+      "default": "Welcome to Toysbuyingagent.com – your destination for collectible toys!"
+    },
+    {
+    "type": "select",
+    "id": "heading_font_size",
+    "label": "Heading Font Size",
+    "options": [
+      { "value": "Small", "label": "Small" },
+      { "value": "Medium", "label": "Medium" },
+      { "value": "Large", "label": "Large" }
+    ],
+    "default": "Small"
+  },
+    {
+      "type": "richtext",
+      "id": "welcome_text",
+      "label": "Text",
+      "default": "<p>We began our journey as a trusted seller on eBay, quickly earning a reputation for reliable service and exceptional customer care. Today, we proudly operate our own online store, where we remain dedicated to providing friendly, reliable service and a carefully curated selection for toy collectors around the world.</p>"
+    },
+	{
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Desktop content alignment",
+      "options": [
+        { "value": "text-left", "label": "Left" },
+        { "value": "text-center", "label": "Center" },
+        { "value": "text-right", "label": "Right" }
+      ],
+      "default": "text-left"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Welcome Section"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.welcome-section {
+  padding: 60px 20px;
+}
+.welcome-section .grid {
+  align-items: center;
+}
+.welcome-heading {
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.welcome-text p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+.welcome-image {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.Medium {
+    font-size: 30px;
+}
+
+/* Height options */
+.welcome-image-wrapper.adapt img { height: auto; }
+.welcome-image-wrapper.small img { height: 200px; }
+.welcome-image-wrapper.medium img { height: 400px; }
+.welcome-image-wrapper.large img { height: 600px; }
+
+
+/* Alignment handle */
+.grid__item.text-left {
+  text-align: left;
+}
+.grid__item.text-center {
+  text-align: center;
+}
+.grid__item.text-right {
+  text-align: right;
+}
+.welcome-section.image-left .image-block {
+  order: 1;
+}
+.welcome-section.image-left .text-block {
+  order: 2;
+}
+
+/* Image right */
+.welcome-section.image-right .image-block {
+  order: 2;
+}
+.welcome-section.image-right .text-block {
+  order: 1;
+}
+.Small{font-size: 20px;}
+.Medium{font-size: 30px;}
+.Large{font-size: 40px;}
+
+</style>
