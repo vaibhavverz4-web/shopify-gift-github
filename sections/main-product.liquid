@@ -248,6 +248,17 @@
                     </ul>
                   {%- endif -%}
 
+
+                  {%- assign product_pdf = product.metafields.custom.product_pdf.value -%}
+                    {%- if product_pdf != blank -%}
+                      <div class="product-pdf">
+                        <a href="{{ product_pdf.url }}" target="_blank" rel="noopener">
+                          {{ 'icon-download' | inline_asset_content }}
+                          Download {{ product_pdf.alt | default: 'PDF' }}
+                        </a>
+                      </div>
+                  {%- endif -%}
+
                 <quantity-input class="quantity">
                   <button class="quantity__button no-js-hidden" name="minus" type="button">
                     <span class="visually-hidden">
