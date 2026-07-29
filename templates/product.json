@@ -16,12 +16,9 @@
           "type": "title",
           "settings": {}
         },
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "text_style": "body"
-          }
+        "description": {
+          "type": "description",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -45,10 +42,6 @@
             "show_gift_card_recipient": false
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "share": {
           "type": "share",
           "disabled": true,
@@ -59,12 +52,11 @@
       },
       "block_order": [
         "title",
-        "vendor",
+        "description",
         "variant_picker",
         "quantity_selector",
         "price",
         "buy_buttons",
-        "description",
         "share"
       ],
       "settings": {
