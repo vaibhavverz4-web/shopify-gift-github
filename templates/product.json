@@ -133,8 +133,8 @@
           "settings": {
             "image": "{{ block.repeater.image.value }}",
             "title": "{{ block.repeater.sub_heading.value }}",
-            "text": "{{ block.repeater.text | metafield_tag }}",
-            "link_label": "{{ block.repeater.heading.value }}"
+            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
+            "link_label": ""
           }
         }
       },
