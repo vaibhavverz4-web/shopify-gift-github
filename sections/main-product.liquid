@@ -280,11 +280,11 @@
                 {%- endif -%}
 
 
-               {%- if about_info.title != blank -%}
-                  <a href="{{ about_info.title.url }}" class="button" target="_blank" rel="noopener">
-                    {{ about_info.title.text }}
-                  </a>
-                {%- endif -%}
+              {%- if about_info.button != blank -%}
+                <a href="{{ about_info.button.url }}" class="button" target="_blank" rel="noopener">
+                  {{ about_info.button.text }}
+                </a>
+              {%- endif -%}
                 
               </div>
             {%- endif -%}
