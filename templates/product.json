@@ -95,12 +95,10 @@
       "blocks": {
         "row_xpLWyY": {
           "type": "row",
+          "repeater": "{{ product.metafields.custom.feature_wrp.value }}",
           "settings": {
-            "caption": "",
-            "heading": "",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "button_label": "",
-            "button_link": ""
+            "caption": "{{ block.repeater.heading | metafield_text }}",
+            "heading": "{{ block.repeater.discpriotion | metafield_text }}"
           }
         }
       },
