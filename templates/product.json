@@ -93,16 +93,19 @@
     "multirow_KcnyCf": {
       "type": "multirow",
       "blocks": {
-        "row_r8rHwx": {
+        "row_xpLWyY": {
           "type": "row",
           "settings": {
-            "caption": "",
-            "heading": ""
+            "caption": "Caption",
+            "heading": "Row",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "button_label": "Button label",
+            "button_link": ""
           }
         }
       },
       "block_order": [
-        "row_r8rHwx"
+        "row_xpLWyY"
       ],
       "name": "t:sections.multirow.presets.name",
       "settings": {
