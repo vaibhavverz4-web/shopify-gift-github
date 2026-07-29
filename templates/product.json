@@ -132,7 +132,7 @@
           "repeater": "{{ product.metafields.custom.multyrow.value }}",
           "settings": {
             "image": "{{ block.repeater.image.value }}",
-            "title": "{{ block.repeater.sub_heading.value }}",
+            "title": "{{ block.repeater.button | metafield_tag }}",
             "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
             "link_label": ""
           }
