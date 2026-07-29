@@ -77,7 +77,7 @@
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.presets.name",
       "settings": {
-        "custom_liquid": "{%- assign key_features = product.metafields.custom.feature_wrp.value -%}\n<pre>{{ key_features | json }}</pre>",
+        "custom_liquid": "{%- assign key_features = product.metafields.custom.feature_wrp.value -%}\n{%- if key_features != blank -%}\n  <div class=\"key-features\">\n    <h2 class=\"key-features__title\">Key Features</h2>\n    <div class=\"key-features__grid\">\n      {%- for feature in key_features -%}\n        <div class=\"key-features__item\">\n          {%- if feature.imahes != blank -%}\n            {%- for img in feature.imahes -%}\n              <img\n                src=\"{{ img | image_url: width: 600 }}\"\n                alt=\"{{ img.alt | escape }}\"\n                loading=\"lazy\"\n              >\n            {%- endfor -%}\n          {%- endif -%}\n\n          {%- if feature.heading != blank -%}\n            <h3 class=\"key-features__heading\">{{ feature.heading | first }}</h3>\n          {%- endif -%}\n\n          {%- if feature.discpriotion != blank -%}\n            <p class=\"key-features__description\">{{ feature.discpriotion | first }}</p>\n          {%- endif -%}\n        </div>\n      {%- endfor -%}\n    </div>\n  </div>\n{%- endif -%}",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52
