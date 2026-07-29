@@ -169,23 +169,30 @@
                 <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                   {{ product.description }}
                 </div>
+
+
+                
+              {% assign accordion_tabs = product.metafields.custom.accordion_tab.value %}
+
+{% if accordion_tabs %}
+  <div class="product-accordion">
+    {% for tab in accordion_tabs %}
+      <details class="accordion-item">
+        <summary class="accordion-title">
+          {{ tab.title }}
+        </summary>
+
+        <div class="accordion-content">
+          {{ tab.content }}
+        </div>
+      </details>
+    {% endfor %}
+  </div>
+{% endif %}
+
               {%- endif -%}
 
-
-              {%- assign accordion_tabs = product.metafields.custom.accordion_tab.value -%}
-                {%- if accordion_tabs != blank -%}
-                  <div class="product-accordion">
-                    {%- for tab in accordion_tabs -%}
-                      <details class="accordion-item">
-                        <summary class="accordion-title">{{ tab.title }}</summary>
-                        <div class="accordion-content">{{ tab.content }}</div>
-                      </details>
-                    {%- endfor -%}
-                  </div>
-                {%- endif -%}
-
-                <a href="{{ product.url }}" class="link product__view-details animate-arrow">
-
+  
 
             {%- when 'sku' -%}
 
