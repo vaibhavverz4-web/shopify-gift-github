@@ -172,7 +172,23 @@
               {%- endif -%}
 
 
-                
+              {% assign accordion_tabs = product.metafields.custom.accordion_tab.value %}
+                {% if accordion_tabs %}
+                  <div class="product-accordion">
+                    {% for tab in accordion_tabs %}
+                      <details class="accordion-item">
+                        <summary class="accordion-title">
+                          {{ tab.title }}
+                        </summary>
+
+                        <div class="accordion-content">
+                          {{ tab.content }}
+                        </div>
+                      </details>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
 
             {%- when 'sku' -%}
 
