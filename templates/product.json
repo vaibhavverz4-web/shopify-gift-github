@@ -77,7 +77,7 @@
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.presets.name",
       "settings": {
-        "custom_liquid": "{%- assign key_features = product.metafields.custom.key_features.value -%}\n{%- if key_features != blank -%}\n  <div class=\"key-features\">\n    <h2 class=\"key-features__title\">Key Features</h2>\n    <div class=\"key-features__grid\">\n      {%- for feature in key_features -%}\n        <div class=\"key-features__item\">\n          {%- if feature.image != blank -%}\n            <div class=\"key-features__image\">\n              <img\n                src=\"{{ feature.image | image_url: width: 600 }}\"\n                alt=\"{{ feature.image.alt | escape }}\"\n                loading=\"lazy\"\n              >\n            </div>\n          {%- endif -%}\n\n          {%- if feature.heading != blank -%}\n            <h3 class=\"key-features__heading\">{{ feature.heading }}</h3>\n          {%- endif -%}\n\n          {%- if feature.description != blank -%}\n            <p class=\"key-features__description\">{{ feature.description }}</p>\n          {%- endif -%}\n        </div>\n      {%- endfor -%}\n    </div>\n  </div>\n{%- endif -%}",
+        "custom_liquid": "<pre>{{ product.metafields.custom.key_features.value | json }}</pre>",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52
