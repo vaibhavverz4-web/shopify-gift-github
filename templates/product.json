@@ -100,7 +100,9 @@
             "image": "{{ block.repeater.image.value }}",
             "caption": "{{ block.repeater.sub_heading.value }}",
             "heading": "{{ block.repeater.heading.value }}",
-            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>"
+            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
+            "button_label": "Button label",
+            "button_link": ""
           }
         }
       },
@@ -116,7 +118,7 @@
         "button_style": "secondary",
         "desktop_content_position": "top",
         "desktop_content_alignment": "left",
-        "image_layout": "alternate-left",
+        "image_layout": "align-right",
         "section_color_scheme": "background-1",
         "row_color_scheme": "background-1",
         "mobile_content_alignment": "left",
