@@ -260,33 +260,33 @@
                   {%- endif -%}
 
 
-            {%- assign about_info = product.metafields.custom.abt.value -%}
-            {%- if about_info != blank -%}
-              <div class="about-section">
-                {%- if about_info.images != blank -%}
-                  <img
-                    src="{{ about_info.images | image_url: width: 600 }}"
-                    alt="{{ about_info.images.alt | escape }}"
-                    loading="lazy"
-                  >
-                {%- endif -%}
+                {%- assign about_info = product.metafields.custom.abt.value -%}
+                    {%- if about_info != blank -%}
+                          <div class="about-section">
+                            {%- if about_info.images != blank -%}
+                              <img
+                                src="{{ about_info.images | image_url: width: 600 }}"
+                                alt="{{ about_info.images.alt | escape }}"
+                                loading="lazy"
+                              >
+                            {%- endif -%}
 
-                {%- if about_info.title != blank -%}
-                  <h2>{{ about_info.title }}</h2>
-                {%- endif -%}
+                            {%- if about_info.title != blank -%}
+                              <h2>{{ about_info.title }}</h2>
+                            {%- endif -%}
 
-                {%- if about_info.discription != blank -%}
-                    <div class="about-description rte">{{ about_info.discription | metafield_tag }}</div>
-                {%- endif -%}
+                            {%- if about_info.discription != blank -%}
+                                <div class="about-description rte">{{ about_info.discription | metafield_tag }}</div>
+                            {%- endif -%}
 
-                {%- if about_info.button != blank -%}
-                  <a href="{{ about_info.button.url }}" class="button" target="_blank" rel="noopener">
-                    {{ about_info.button.text }}
-                  </a>
-                {%- endif -%}
-                
-              </div>
-            {%- endif -%}
+                            {%- if about_info.button != blank -%}
+                              <a href="{{ about_info.button.url }}" class="button" target="_blank" rel="noopener">
+                                {{ about_info.button.text }}
+                              </a>
+                            {%- endif -%}
+                            
+                          </d iv>
+                  {%- endif -%}
 
                   
                 <quantity-input class="quantity">
