@@ -93,16 +93,17 @@
     "multirow_KcnyCf": {
       "type": "multirow",
       "blocks": {
-        "row_xpLWyY": {
+        "row_DAQBED": {
           "type": "row",
+          "repeater": "{{ product.metafields.custom.feature_wrp.value }}",
           "settings": {
-            "caption": "",
-            "heading": ""
+            "caption": "{{ block.repeater.heading | metafield_text }}",
+            "heading": "{{ block.repeater.discpriotion | metafield_text }}"
           }
         }
       },
       "block_order": [
-        "row_xpLWyY"
+        "row_DAQBED"
       ],
       "name": "t:sections.multirow.presets.name",
       "settings": {
