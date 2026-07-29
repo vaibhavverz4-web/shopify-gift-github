@@ -162,6 +162,7 @@
                   {%- endif -%}
                 {%- endif -%}
               </p>
+              
             {%- when 'description' -%}
               {%- if product.description != blank -%}
                 <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
@@ -169,26 +170,6 @@
                 </div>
               {%- endif -%}
             {%- when 'sku' -%}
-
-              
-          {% assign accordion_tabs = product.metafields.custom.accordion_tab.value %}
-
-              {% if accordion_tabs %}
-                <div class="product-accordion">
-                  {% for tab in accordion_tabs %}
-                    <details class="accordion-item">
-                      <summary class="accordion-title">
-                        {{ tab.title }}
-                      </summary>
-
-                      <div class="accordion-content">
-                        {{ tab.content }}
-                      </div>
-                    </details>
-                  {% endfor %}
-                </div>
-          {% endif %}
-
 
 
               <p
@@ -199,6 +180,8 @@
               >
                 <span class="visually-hidden">{{ 'products.product.sku' | t }}:</span> {{- product.selected_or_first_available_variant.sku -}}
               </p>
+
+
             {%- when 'custom_liquid' -%}
               {{ block.settings.custom_liquid }}
             {%- when 'collapsible_tab' -%}
