@@ -95,12 +95,12 @@
       "blocks": {
         "row_mgHcKt": {
           "type": "row",
+          "repeater": "{{ product.metafields.custom.multyrow.value }}",
           "settings": {
-            "caption": "Caption",
-            "heading": "Row",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "button_label": "Button label",
-            "button_link": ""
+            "image": "{{ block.repeater.image.value }}",
+            "caption": "{{ block.repeater.sub_heading.value }}",
+            "heading": "{{ block.repeater.heading.value }}",
+            "text": "{{ block.repeater.text | metafield_tag }}"
           }
         }
       },
@@ -134,7 +134,8 @@
             "image": "{{ block.repeater.image.value }}",
             "title": "{{ block.repeater.button | metafield_tag }}",
             "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
-            "link_label": ""
+            "link_label": "",
+            "link": ""
           }
         }
       },
