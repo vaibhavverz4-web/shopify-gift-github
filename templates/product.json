@@ -95,9 +95,12 @@
       "blocks": {
         "row_DAQBED": {
           "type": "row",
+          "repeater": "{{ product.metafields.custom.multyrow.value }}",
           "settings": {
-            "caption": "",
-            "heading": ""
+            "image": "{{ block.repeater.image.value }}",
+            "caption": "{{ block.repeater.sub_heading.value }}",
+            "heading": "{{ block.repeater.heading.value }}",
+            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>"
           }
         }
       },
@@ -106,15 +109,15 @@
       ],
       "name": "t:sections.multirow.presets.name",
       "settings": {
-        "image_height": "medium",
+        "image_height": "adapt",
         "desktop_image_width": "medium",
         "heading_size": "h1",
         "text_style": "body",
         "button_style": "secondary",
-        "desktop_content_position": "middle",
+        "desktop_content_position": "top",
         "desktop_content_alignment": "left",
         "image_layout": "alternate-left",
-        "section_color_scheme": "accent-2",
+        "section_color_scheme": "background-1",
         "row_color_scheme": "background-1",
         "mobile_content_alignment": "left",
         "padding_top": 36,
