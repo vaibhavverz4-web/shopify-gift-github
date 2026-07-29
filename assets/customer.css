@@ -6,6 +6,25 @@
   text-align: center;
 }
 
+.product-accordion .accordion-item{
+  border-bottom:1px solid #ddd;
+}
+
+.product-accordion .accordion-title{
+  cursor:pointer;
+  font-weight:600;
+  padding:16px 0;
+  list-style:none;
+}
+
+.product-accordion .accordion-title::-webkit-details-marker{
+  display:none;
+}
+
+.product-accordion .accordion-content{
+  padding:0 0 16px;
+}
+
 @media screen and (min-width: 750px) {
   .customer:not(.account):not(.order) {
     max-width: 47.8rem;
