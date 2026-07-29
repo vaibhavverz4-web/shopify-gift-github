@@ -276,9 +276,9 @@
                 {%- endif -%}
 
                 {%- if about_info.discription != blank -%}
-                   <div class="about-description rte">{{ about_info.discription }}</div>
+                    <div class="about-description rte">{{ about_info.discription | metafield_tag }}</div>
                 {%- endif -%}
-
+                
                 {%- if about_info.read_more != blank -%}
                   <a href="{{ about_info.read_more }}" class="button" target="_blank" rel="noopener">
                     Read More
