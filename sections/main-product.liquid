@@ -261,7 +261,31 @@
 
 
                   {%- assign about_info = product.metafields.custom.about_text_info.value -%}
-<pre>{{ about_info | json }}</pre>
+                      {%- if about_info != blank -%}
+                        <div class="about-eurokars">
+                          {%- if about_info.about_images != blank -%}
+                            <img src="{{ about_info.about_images | image_url: width: 600 }}" alt="{{ about_info.about_images.alt | escape }}" loading="lazy">
+                          {%- endif -%}
+
+                          {%- if about_info.about_title != blank -%}
+                            <h2>{{ about_info.about_title }}</h2>
+                          {%- endif -%}
+
+                          {%- if about_info.about_discription != blank -%}
+                            <div class="about-description rte">{{ about_info.about_discription }}</div>
+                          {%- endif -%}
+
+                          {%- if about_info.owner_name != blank -%}
+                            <p class="owner-name">{{ about_info.owner_name }}</p>
+                          {%- endif -%}
+
+                          {%- if about_info.url != blank -%}
+                            <a href="{{ about_info.url }}" class="button">
+                              {{ about_info.button_label | default: 'Learn more' }}
+                            </a>
+                          {%- endif -%}
+                        </div>
+                    {%- endif -%}
 
 
                 <quantity-input class="quantity">
