@@ -125,11 +125,56 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "image_with_text_EgfxnR": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_J3QrN6": {
+          "type": "heading",
+          "settings": {
+            "heading": "{{ product.metafields.custom.multyrow | metafield_text: field: 'heading' }}",
+            "heading_size": "h1"
+          }
+        },
+        "text_3nKUYB": {
+          "type": "text",
+          "settings": {
+            "text": ""
+          }
+        },
+        "button_xXGJfd": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_J3QrN6",
+        "text_3nKUYB",
+        "button_xXGJfd"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "color_scheme": "background-1",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "main",
     "related-products",
-    "multirow_KcnyCf"
+    "multirow_KcnyCf",
+    "image_with_text_EgfxnR"
   ]
 }
