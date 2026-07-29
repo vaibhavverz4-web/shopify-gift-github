@@ -234,6 +234,20 @@
                     <span>({{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}})</span>
                   </span>
                 </label>
+
+                {%- assign ul_li_field = product.metafields.custom.ul_li.value -%}
+                  {%- if ul_li_field != blank -%}
+                    <ul class="product-list">
+                      {%- assign list_items = ul_li_field | newline_to_br | split: '<br />' -%}
+                      {%- for item in list_items -%}
+                        {%- assign trimmed_item = item | strip -%}
+                        {%- if trimmed_item != blank -%}
+                          <li>{{ trimmed_item }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+
                 <quantity-input class="quantity">
                   <button class="quantity__button no-js-hidden" name="minus" type="button">
                     <span class="visually-hidden">
