@@ -162,41 +162,13 @@
                   {%- endif -%}
                 {%- endif -%}
               </p>
-              
             {%- when 'description' -%}
-
               {%- if product.description != blank -%}
                 <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                   {{ product.description }}
                 </div>
-
-
-                
-              {% assign accordion_tabs = product.metafields.custom.accordion_tab.value %}
-
-{% if accordion_tabs %}
-  <div class="product-accordion">
-    {% for tab in accordion_tabs %}
-      <details class="accordion-item">
-        <summary class="accordion-title">
-          {{ tab.title }}
-        </summary>
-
-        <div class="accordion-content">
-          {{ tab.content }}
-        </div>
-      </details>
-    {% endfor %}
-  </div>
-{% endif %}
-
               {%- endif -%}
-
-  
-
             {%- when 'sku' -%}
-
-
               <p
                 class="product__sku no-js-hidden{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
                 id="Sku-{{ section.id }}"
@@ -205,8 +177,6 @@
               >
                 <span class="visually-hidden">{{ 'products.product.sku' | t }}:</span> {{- product.selected_or_first_available_variant.sku -}}
               </p>
-
-
             {%- when 'custom_liquid' -%}
               {{ block.settings.custom_liquid }}
             {%- when 'collapsible_tab' -%}
@@ -465,6 +435,23 @@
               %}
           {%- endcase -%}
         {%- endfor -%}
+
+        {%- assign accordion_tabs = product.metafields.custom.accordion_tab.value -%}
+        {%- if accordion_tabs != blank -%}
+          <div class="product-accordion">
+            {%- for tab in accordion_tabs -%}
+              <details class="accordion-item">
+                <summary class="accordion-title">
+                  {{ tab.title }}
+                </summary>
+                <div class="accordion-content">
+                  {{ tab.content }}
+                </div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
         <a href="{{ product.url }}" class="link product__view-details animate-arrow">
           {{ 'products.product.view_full_details' | t }}
           {% render 'icon-arrow' %}
