@@ -95,10 +95,9 @@
       "blocks": {
         "row_r8rHwx": {
           "type": "row",
-          "repeater": "{{ product.metafields.custom.feature_wrp.value }}",
           "settings": {
-            "caption": "{{ block.repeater.heading | metafield_text }}",
-            "heading": "{{ block.repeater.discpriotion | metafield_text }}"
+            "caption": "",
+            "heading": ""
           }
         }
       },
