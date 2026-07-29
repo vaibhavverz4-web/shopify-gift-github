@@ -132,7 +132,7 @@
         "heading_J3QrN6": {
           "type": "heading",
           "settings": {
-            "heading": "{{ product.metafields.custom.multyrow | metafield_text: field: 'heading' }}",
+            "heading": "",
             "heading_size": "h1"
           }
         },
