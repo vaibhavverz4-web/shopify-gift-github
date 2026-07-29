@@ -95,10 +95,9 @@
       "blocks": {
         "row_xpLWyY": {
           "type": "row",
-          "repeater": "{{ product.metafields.custom.feature_wrp.value }}",
           "settings": {
-            "caption": "{{ block.repeater.heading | metafield_text }}",
-            "heading": "{{ block.repeater.discpriotion | metafield_text }}"
+            "caption": "",
+            "heading": ""
           }
         }
       },
@@ -115,7 +114,7 @@
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
         "image_layout": "alternate-left",
-        "section_color_scheme": "background-1",
+        "section_color_scheme": "accent-2",
         "row_color_scheme": "background-1",
         "mobile_content_alignment": "left",
         "padding_top": 36,
