@@ -279,12 +279,11 @@
                     <div class="about-description rte">{{ about_info.discription | metafield_tag }}</div>
                 {%- endif -%}
 
-
-              {%- if about_info.button != blank -%}
-                <a href="{{ about_info.button.url }}" class="button" target="_blank" rel="noopener">
-                  {{ about_info.button.text }}
-                </a>
-              {%- endif -%}
+                {%- if about_info.button != blank -%}
+                  <a href="{{ about_info.button.url }}" class="button" target="_blank" rel="noopener">
+                    {{ about_info.button.text }}
+                  </a>
+                {%- endif -%}
                 
               </div>
             {%- endif -%}
