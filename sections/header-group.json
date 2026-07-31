@@ -42,6 +42,15 @@
             "image_link": "#"
           }
         },
+        "mega_menu_column_image_t4gkTy": {
+          "type": "mega_menu_column_image",
+          "settings": {
+            "parent_menu_item": "Services Wrpapper",
+            "column_title": "Ser2",
+            "image": "shopify://shop_images/collection_5.png",
+            "image_link": "#"
+          }
+        },
         "mega_menu_media_h6pP3e": {
           "type": "mega_menu_media",
           "settings": {
@@ -68,6 +77,7 @@
       },
       "block_order": [
         "mega_menu_column_image_hRdNNf",
+        "mega_menu_column_image_t4gkTy",
         "mega_menu_media_h6pP3e"
       ],
       "custom_css": [
