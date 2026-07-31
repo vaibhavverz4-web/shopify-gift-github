@@ -92,21 +92,32 @@
   font-weight: normal;
 }
 
+/* Mega menu row: text columns + image blocks side by side */
+.mega-menu__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+.mega-menu__row .mega-menu__list {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 /* Mega menu image blocks (set via theme editor) */
 .mega-menu__images {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.4rem;
-  margin-top: 2.4rem;
-  padding-top: 2.4rem;
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  gap: 2rem;
+  flex: 0 0 auto;
 }
 
 .mega-menu__image-item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 18rem;
+  width: 16rem;
   max-width: 100%;
   text-decoration: none;
   color: rgb(var(--color-foreground));
