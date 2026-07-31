@@ -36,11 +36,12 @@
         "mega_menu_media_h6pP3e": {
           "type": "mega_menu_media",
           "settings": {
-            "parent_menu_item": "",
+            "parent_menu_item": "Home",
             "show_banner": true,
-            "banner_link": "",
+            "banner_image": "shopify://shop_images/enquiry_form_bg_137fdeb0-14a7-4c35-8b7f-cdc162dffbe5.jpg",
+            "banner_link": "#",
             "view_all_text": "View all",
-            "view_all_link": "",
+            "view_all_link": "#",
             "show_tile_1": true,
             "tile_1_title": "",
             "tile_1_link": "",
