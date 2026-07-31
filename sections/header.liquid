@@ -548,39 +548,42 @@
                             {%- endfor -%}
                           </ul>
                           {%- liquid
-                            assign mega_menu_banner = null
+                            assign mega_menu_media = null
                             for block in section.blocks
-                              if block.type == 'mega_menu_banner' and block.settings.parent_menu_item == link.title
-                                assign mega_menu_banner = block
-                              endif
-                            endfor
-                            assign mega_menu_images = ''
-                            for block in section.blocks
-                              if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title
-                                assign mega_menu_images = mega_menu_images | append: '1'
+                              if block.type == 'mega_menu_media' and block.settings.parent_menu_item == link.title
+                                assign mega_menu_media = block
                               endif
                             endfor
                           -%}
-                          {%- if mega_menu_banner != null or mega_menu_images != '' -%}
-                            <div class="mega-menu__media">
-                              {%- if mega_menu_banner != null -%}
-                                {%- if mega_menu_banner.settings.view_all_link != blank or mega_menu_banner.settings.view_all_label != blank -%}
-                                  <a href="{{ mega_menu_banner.settings.view_all_link | default: link.url }}" class="mega-menu__banner-link">
-                                    {{ mega_menu_banner.settings.view_all_label | default: 'View all' | escape }}
+                          {%- if mega_menu_media != null -%}
+                            {%- liquid
+                              assign m = mega_menu_media.settings
+                              assign tile_count = 0
+                              if m.show_tile_1
+                                assign tile_count = tile_count | plus: 1
+                              endif
+                              if m.show_tile_2
+                                assign tile_count = tile_count | plus: 1
+                              endif
+                              if m.show_tile_3
+                                assign tile_count = tile_count | plus: 1
+                              endif
+                            -%}
+                            <div class="mega-menu__media" {{ mega_menu_media.shopify_attributes }}>
+                              {%- if m.show_banner -%}
+                                {%- if m.view_all_link != blank or m.view_all_text != blank -%}
+                                  <a href="{{ m.view_all_link | default: link.url }}" class="mega-menu__banner-link">
+                                    {{ m.view_all_text | default: 'View all' | escape }}
                                   </a>
                                 {%- endif -%}
-                                <a
-                                  href="{{ mega_menu_banner.settings.view_all_link | default: link.url }}"
-                                  class="mega-menu__banner-image-link"
-                                  {{ mega_menu_banner.shopify_attributes }}
-                                >
-                                  {%- if mega_menu_banner.settings.image != blank -%}
+                                <a href="{{ m.banner_link | default: m.view_all_link | default: link.url }}" class="mega-menu__banner-image-link">
+                                  {%- if m.banner_image != blank -%}
                                     <img
-                                      src="{{ mega_menu_banner.settings.image | image_url: width: 900 }}"
-                                      alt="{{ mega_menu_banner.settings.image.alt | escape }}"
+                                      src="{{ m.banner_image | image_url: width: 900 }}"
+                                      alt="{{ m.banner_image.alt | escape }}"
                                       loading="lazy"
-                                      width="{{ mega_menu_banner.settings.image.width }}"
-                                      height="{{ mega_menu_banner.settings.image.height }}"
+                                      width="{{ m.banner_image.width }}"
+                                      height="{{ m.banner_image.height }}"
                                       class="mega-menu__banner-image"
                                     >
                                   {%- else -%}
@@ -590,39 +593,38 @@
                                   {%- endif -%}
                                 </a>
                               {%- endif -%}
-                              {%- if mega_menu_images != '' -%}
+                              {%- if tile_count > 0 -%}
                                 <div class="mega-menu__images">
-                                  {%- for block in section.blocks -%}
-                                    {%- if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title -%}
-                                      <a
-                                        {% if block.settings.link != blank %}
-                                          href="{{ block.settings.link }}"
-                                        {% else %}
-                                          href="{{ link.url }}"
-                                        {% endif %}
-                                        class="mega-menu__image-item"
-                                        {{ block.shopify_attributes }}
-                                      >
-                                        {%- if block.settings.image != blank -%}
-                                          <img
-                                            src="{{ block.settings.image | image_url: width: 600 }}"
-                                            alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
-                                            loading="lazy"
-                                            width="{{ block.settings.image.width }}"
-                                            height="{{ block.settings.image.height }}"
-                                            class="mega-menu__image"
-                                          >
-                                        {%- else -%}
-                                          <div class="mega-menu__image mega-menu__image--placeholder">
-                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                                          </div>
-                                        {%- endif -%}
-                                        {%- if block.settings.title != blank -%}
-                                          <span class="mega-menu__image-title">{{ block.settings.title | escape }}</span>
-                                        {%- endif -%}
-                                      </a>
-                                    {%- endif -%}
-                                  {%- endfor -%}
+                                  {%- if m.show_tile_1 -%}
+                                    <a href="{{ m.tile_1_link | default: link.url }}" class="mega-menu__image-item">
+                                      {%- if m.tile_1_image != blank -%}
+                                        <img src="{{ m.tile_1_image | image_url: width: 600 }}" alt="{{ m.tile_1_image.alt | default: m.tile_1_title | escape }}" loading="lazy" width="{{ m.tile_1_image.width }}" height="{{ m.tile_1_image.height }}" class="mega-menu__image">
+                                      {%- else -%}
+                                        <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                      {%- endif -%}
+                                      {%- if m.tile_1_title != blank -%}<span class="mega-menu__image-title">{{ m.tile_1_title | escape }}</span>{%- endif -%}
+                                    </a>
+                                  {%- endif -%}
+                                  {%- if m.show_tile_2 -%}
+                                    <a href="{{ m.tile_2_link | default: link.url }}" class="mega-menu__image-item">
+                                      {%- if m.tile_2_image != blank -%}
+                                        <img src="{{ m.tile_2_image | image_url: width: 600 }}" alt="{{ m.tile_2_image.alt | default: m.tile_2_title | escape }}" loading="lazy" width="{{ m.tile_2_image.width }}" height="{{ m.tile_2_image.height }}" class="mega-menu__image">
+                                      {%- else -%}
+                                        <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                      {%- endif -%}
+                                      {%- if m.tile_2_title != blank -%}<span class="mega-menu__image-title">{{ m.tile_2_title | escape }}</span>{%- endif -%}
+                                    </a>
+                                  {%- endif -%}
+                                  {%- if m.show_tile_3 -%}
+                                    <a href="{{ m.tile_3_link | default: link.url }}" class="mega-menu__image-item">
+                                      {%- if m.tile_3_image != blank -%}
+                                        <img src="{{ m.tile_3_image | image_url: width: 600 }}" alt="{{ m.tile_3_image.alt | default: m.tile_3_title | escape }}" loading="lazy" width="{{ m.tile_3_image.width }}" height="{{ m.tile_3_image.height }}" class="mega-menu__image">
+                                      {%- else -%}
+                                        <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                      {%- endif -%}
+                                      {%- if m.tile_3_title != blank -%}<span class="mega-menu__image-title">{{ m.tile_3_title | escape }}</span>{%- endif -%}
+                                    </a>
+                                  {%- endif -%}
                                 </div>
                               {%- endif -%}
                             </div>
@@ -1210,66 +1212,124 @@
       "type": "@app"
     },
     {
-      "type": "mega_menu_banner",
-      "name": "Mega Menu Banner",
+      "type": "mega_menu_media",
+      "name": "Mega Menu Images",
       "settings": [
         {
           "type": "paragraph",
-          "content": "Large banner image at the top of the mega menu image area, with a 'View all' link above it. Type the exact top-level menu title below to control which menu it appears under."
+          "content": "Add ONE of these blocks per top-level menu item. It controls the whole image area (banner + up to 3 tiles) for that menu's dropdown."
         },
         {
           "type": "text",
           "id": "parent_menu_item",
-          "label": "Parent menu item (exact title)",
+          "label": "Menu item (exact title)",
           "info": "Must exactly match a top-level menu item title, e.g. Home, Catalog."
         },
         {
+          "type": "header",
+          "content": "Banner"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_banner",
+          "label": "Show banner",
+          "default": true
+        },
+        {
           "type": "image_picker",
-          "id": "image",
+          "id": "banner_image",
           "label": "Banner image"
         },
         {
+          "type": "url",
+          "id": "banner_link",
+          "label": "Banner link"
+        },
+        {
           "type": "text",
-          "id": "view_all_label",
-          "label": "\"View all\" link text",
+          "id": "view_all_text",
+          "label": "\"View all\" button text",
           "default": "View all"
         },
         {
           "type": "url",
           "id": "view_all_link",
-          "label": "\"View all\" link"
-        }
-      ]
-    },
-    {
-      "type": "mega_menu_image",
-      "name": "Mega Menu Image",
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Shows a small image tile below the banner. Type the exact top-level menu title below (e.g. Home) to control which menu this image appears under."
+          "label": "\"View all\" button link"
         },
         {
-          "type": "text",
-          "id": "parent_menu_item",
-          "label": "Parent menu item (exact title)",
-          "info": "Must exactly match a top-level menu item title, e.g. Home, Catalog."
+          "type": "header",
+          "content": "Tile 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tile_1",
+          "label": "Show tile 1",
+          "default": true
         },
         {
           "type": "image_picker",
-          "id": "image",
-          "label": "Image"
+          "id": "tile_1_image",
+          "label": "Tile 1 image"
         },
         {
           "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Featured"
+          "id": "tile_1_title",
+          "label": "Tile 1 title"
         },
         {
           "type": "url",
-          "id": "link",
-          "label": "Link"
+          "id": "tile_1_link",
+          "label": "Tile 1 link"
+        },
+        {
+          "type": "header",
+          "content": "Tile 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tile_2",
+          "label": "Show tile 2",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "tile_2_image",
+          "label": "Tile 2 image"
+        },
+        {
+          "type": "text",
+          "id": "tile_2_title",
+          "label": "Tile 2 title"
+        },
+        {
+          "type": "url",
+          "id": "tile_2_link",
+          "label": "Tile 2 link"
+        },
+        {
+          "type": "header",
+          "content": "Tile 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tile_3",
+          "label": "Show tile 3",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "tile_3_image",
+          "label": "Tile 3 image"
+        },
+        {
+          "type": "text",
+          "id": "tile_3_title",
+          "label": "Tile 3 title"
+        },
+        {
+          "type": "url",
+          "id": "tile_3_link",
+          "label": "Tile 3 link"
         }
       ]
     }
