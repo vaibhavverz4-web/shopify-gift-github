@@ -32,6 +32,19 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_image_JtekXN": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "",
+            "title": "Featured",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_image_JtekXN"
+      ],
       "custom_css": [
         ".header__heading-link .h2 {font-size: 16px;}"
       ],
