@@ -41,10 +41,20 @@
             "title": "Featured",
             "link": "#"
           }
+        },
+        "mega_menu_image_AkRK7X": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "catalog",
+            "image": "shopify://shop_images/image_1.jpg",
+            "title": "Featured",
+            "link": "#"
+          }
         }
       },
       "block_order": [
-        "mega_menu_image_JtekXN"
+        "mega_menu_image_JtekXN",
+        "mega_menu_image_AkRK7X"
       ],
       "custom_css": [
         ".header__heading-link .h2 {font-size: 16px;}"
