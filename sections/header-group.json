@@ -60,6 +60,15 @@
             "link": "#"
           }
         },
+        "mega_menu_image_4tNnP7": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "Services Wrpapper",
+            "image": "shopify://shop_images/image_2.jpg",
+            "title": "Featured",
+            "link": "#"
+          }
+        },
         "mega_menu_image_98c4m6": {
           "type": "mega_menu_image",
           "settings": {
@@ -119,6 +128,7 @@
         "mega_menu_image_GLzEec",
         "mega_menu_image_nU7Vm4",
         "mega_menu_image_xb96Pn",
+        "mega_menu_image_4tNnP7",
         "mega_menu_image_98c4m6",
         "mega_menu_image_JtekXN",
         "mega_menu_image_qFhHUD",
