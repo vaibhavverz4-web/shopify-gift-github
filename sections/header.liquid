@@ -145,31 +145,56 @@
     height: 100%;
   }
 
-  /* Mega menu per-link thumbnail image (mega_menu_link_image block) */
-  .mega-menu__link-item--has-image {
+  /* Mega menu per-column top image (mega_menu_column_image block) - Nike style */
+  .mega-menu__list {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
   }
 
-  .mega-menu__link-item--has-image .mega-menu__link {
+  .mega-menu__column {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    min-width: 140px;
+  }
+
+  .mega-menu__column--has-image {
     gap: 0.5rem;
   }
 
-  .mega-menu__link-thumb {
+  .mega-menu__column-image-link {
     display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 4px;
+    margin-bottom: 0.75rem;
   }
 
-  .mega-menu__link-thumb img {
+  .mega-menu__column-image {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 4 / 3;
     object-fit: cover;
+    border-radius: 4px;
+    display: block;
+  }
+
+  .mega-menu__column-image.mega-menu__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .mega-menu__column-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .mega-menu__column .list-unstyled {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
   }
 </style>
 
@@ -694,31 +719,37 @@
                           <ul class="mega-menu__list{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
                             {%- for childlink in link.links -%}
                               {%- liquid
-                                assign link_image_block = null
+                                assign column_image_block = null
                                 for block in section.blocks
-                                  if block.type == 'mega_menu_link_image' and block.settings.parent_menu_item == link.title and block.settings.link_title == childlink.title
-                                    assign link_image_block = block
+                                  if block.type == 'mega_menu_column_image' and block.settings.parent_menu_item == link.title and block.settings.column_title == childlink.title
+                                    assign column_image_block = block
                                   endif
                                 endfor
                               -%}
-                              <li class="mega-menu__link-item{% if link_image_block != null %} mega-menu__link-item--has-image{% endif %}" {% if link_image_block != null %}{{ link_image_block.shopify_attributes }}{% endif %}>
-                                <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                  {%- if link_image_block != null -%}
-                                    <span class="mega-menu__link-thumb">
-                                      {%- if link_image_block.settings.image != blank -%}
-                                        <img
-                                          src="{{ link_image_block.settings.image | image_url: width: 200 }}"
-                                          alt="{{ childlink.title | escape }}"
-                                          loading="lazy"
-                                          width="{{ link_image_block.settings.image.width }}"
-                                          height="{{ link_image_block.settings.image.height }}"
-                                        >
-                                      {%- else -%}
+                              <li class="mega-menu__column{% if column_image_block != null %} mega-menu__column--has-image{% endif %}" {% if column_image_block != null %}{{ column_image_block.shopify_attributes }}{% endif %}>
+                                {%- if column_image_block != null -%}
+                                  {%- liquid
+                                    assign ci = column_image_block.settings
+                                  -%}
+                                  <a href="{{ ci.image_link | default: childlink.url }}" class="mega-menu__column-image-link">
+                                    {%- if ci.image != blank -%}
+                                      <img
+                                        src="{{ ci.image | image_url: width: 400 }}"
+                                        alt="{{ ci.image.alt | default: childlink.title | escape }}"
+                                        loading="lazy"
+                                        width="{{ ci.image.width }}"
+                                        height="{{ ci.image.height }}"
+                                        class="mega-menu__column-image"
+                                      >
+                                    {%- else -%}
+                                      <div class="mega-menu__column-image mega-menu__image--placeholder">
                                         {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                                      {%- endif -%}
-                                    </span>
-                                  {%- endif -%}
-                                  <span class="mega-menu__link-text">{{ childlink.title | escape }}</span>
+                                      </div>
+                                    {%- endif -%}
+                                  </a>
+                                {%- endif -%}
+                                <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 mega-menu__column-title link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                                  {{ childlink.title | escape }}
                                 </a>
                                 {%- if childlink.links != blank -%}
                                   <ul class="list-unstyled" role="list">
@@ -1521,29 +1552,35 @@
       ]
     },
     {
-      "type": "mega_menu_link_image",
-      "name": "Mega Menu Link Image",
+      "type": "mega_menu_column_image",
+      "name": "Mega Menu Column Image",
       "settings": [
         {
           "type": "paragraph",
-          "content": "Add ONE block per sub-menu link that should show a small thumbnail image above it (Nike-style mega menu)."
+          "content": "Nike-style layout: add ONE block per column to show an image at the top of that column, above its title and link list."
         },
         {
           "type": "text",
           "id": "parent_menu_item",
           "label": "Top-level menu item (exact title)",
-          "info": "e.g. Collaborations"
+          "info": "e.g. Home"
         },
         {
           "type": "text",
-          "id": "link_title",
-          "label": "Link text (exact match)",
-          "info": "Must exactly match the sub-menu link title, e.g. Off White"
+          "id": "column_title",
+          "label": "Column title (exact match)",
+          "info": "Must exactly match the column's link title in your menu, e.g. Collaborations"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Thumbnail image"
+          "label": "Column image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link (optional)",
+          "info": "Defaults to the column's own link if left blank"
         }
       ]
     }
