@@ -526,69 +526,71 @@
                         {% render 'icon-caret' %}
                       </summary>
                       <div id="MegaMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
-                        <ul class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
-                          {%- for childlink in link.links -%}
-                            <li>
-                              <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                {{ childlink.title | escape }}
-                              </a>
-                              {%- if childlink.links != blank -%}
-                                <ul class="list-unstyled" role="list">
-                                  {%- for grandchildlink in childlink.links -%}
-                                    <li>
-                                      <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
-                                        {{ grandchildlink.title | escape }}
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              {%- endif -%}
-                            </li>
-                          {%- endfor -%}
-                        </ul>
-                        {%- liquid
-                          assign mega_menu_images = ''
-                          for block in section.blocks
-                            if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title
-                              assign mega_menu_images = mega_menu_images | append: '1'
-                            endif
-                          endfor
-                        -%}
-                        {%- if mega_menu_images != '' -%}
-                          <div class="mega-menu__images page-width">
-                            {%- for block in section.blocks -%}
-                              {%- if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title -%}
-                                <a
-                                  {% if block.settings.link != blank %}
-                                    href="{{ block.settings.link }}"
-                                  {% else %}
-                                    href="{{ link.url }}"
-                                  {% endif %}
-                                  class="mega-menu__image-item"
-                                  {{ block.shopify_attributes }}
-                                >
-                                  {%- if block.settings.image != blank -%}
-                                    <img
-                                      src="{{ block.settings.image | image_url: width: 600 }}"
-                                      alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
-                                      loading="lazy"
-                                      width="{{ block.settings.image.width }}"
-                                      height="{{ block.settings.image.height }}"
-                                      class="mega-menu__image"
-                                    >
-                                  {%- else -%}
-                                    <div class="mega-menu__image mega-menu__image--placeholder">
-                                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                                    </div>
-                                  {%- endif -%}
-                                  {%- if block.settings.title != blank -%}
-                                    <span class="mega-menu__image-title">{{ block.settings.title | escape }}</span>
-                                  {%- endif -%}
+                        <div class="mega-menu__row page-width">
+                          <ul class="mega-menu__list{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
+                            {%- for childlink in link.links -%}
+                              <li>
+                                <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                                  {{ childlink.title | escape }}
                                 </a>
-                              {%- endif -%}
+                                {%- if childlink.links != blank -%}
+                                  <ul class="list-unstyled" role="list">
+                                    {%- for grandchildlink in childlink.links -%}
+                                      <li>
+                                        <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                          {{ grandchildlink.title | escape }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              </li>
                             {%- endfor -%}
-                          </div>
-                        {%- endif -%}
+                          </ul>
+                          {%- liquid
+                            assign mega_menu_images = ''
+                            for block in section.blocks
+                              if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title
+                                assign mega_menu_images = mega_menu_images | append: '1'
+                              endif
+                            endfor
+                          -%}
+                          {%- if mega_menu_images != '' -%}
+                            <div class="mega-menu__images">
+                              {%- for block in section.blocks -%}
+                                {%- if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title -%}
+                                  <a
+                                    {% if block.settings.link != blank %}
+                                      href="{{ block.settings.link }}"
+                                    {% else %}
+                                      href="{{ link.url }}"
+                                    {% endif %}
+                                    class="mega-menu__image-item"
+                                    {{ block.shopify_attributes }}
+                                  >
+                                    {%- if block.settings.image != blank -%}
+                                      <img
+                                        src="{{ block.settings.image | image_url: width: 600 }}"
+                                        alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                                        loading="lazy"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}"
+                                        class="mega-menu__image"
+                                      >
+                                    {%- else -%}
+                                      <div class="mega-menu__image mega-menu__image--placeholder">
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                      </div>
+                                    {%- endif -%}
+                                    {%- if block.settings.title != blank -%}
+                                      <span class="mega-menu__image-title">{{ block.settings.title | escape }}</span>
+                                    {%- endif -%}
+                                  </a>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          {%- endif -%}
+                        </div>
                       </div>
                     </details>
                   </header-menu>
