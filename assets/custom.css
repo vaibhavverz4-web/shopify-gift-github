@@ -121,6 +121,7 @@
   max-width: 100%;
   text-decoration: none;
   color: rgb(var(--color-foreground));
+  height: 420px;
 }
 
 .mega-menu__image {
