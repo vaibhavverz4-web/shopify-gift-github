@@ -51,8 +51,9 @@
             "tile_2_title": "2",
             "tile_2_link": "#",
             "show_tile_3": true,
-            "tile_3_title": "",
-            "tile_3_link": ""
+            "tile_3_image": "shopify://shop_images/collection_3.jpg",
+            "tile_3_title": "3",
+            "tile_3_link": "#"
           }
         }
       },
