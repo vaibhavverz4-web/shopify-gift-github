@@ -33,108 +33,28 @@
     "header": {
       "type": "header",
       "blocks": {
-        "mega_menu_image_GLzEec": {
-          "type": "mega_menu_image",
+        "mega_menu_media_h6pP3e": {
+          "type": "mega_menu_media",
           "settings": {
-            "parent_menu_item": "Services Wrpapper",
-            "image": "shopify://shop_images/logo_98909226-4dc5-4d5a-ad90-dcfc68ce3348.png",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_nU7Vm4": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Services Wrpapper",
-            "image": "shopify://shop_images/collection_5.png",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_xb96Pn": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Services Wrpapper",
-            "image": "shopify://shop_images/collection_3.jpg",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_4tNnP7": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Services Wrpapper",
-            "image": "shopify://shop_images/image_2.jpg",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_98c4m6": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Services Wrpapper",
-            "image": "shopify://shop_images/logo.png",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_JtekXN": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Home",
-            "image": "shopify://shop_images/enquiry_form_bg.jpg",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_qFhHUD": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Home",
-            "image": "shopify://shop_images/enquiry_form_bg.jpg",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_4CFMwz": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Home",
-            "image": "shopify://shop_images/enquiry_form_bg.jpg",
-            "title": "Featured",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_TFiW77": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Home",
-            "image": "shopify://shop_images/md_view.jpg",
-            "title": "2",
-            "link": "#"
-          }
-        },
-        "mega_menu_image_RPGpPh": {
-          "type": "mega_menu_image",
-          "settings": {
-            "parent_menu_item": "Catalog",
-            "image": "shopify://shop_images/md_view.jpg",
-            "title": "2",
-            "link": "#"
+            "parent_menu_item": "",
+            "show_banner": true,
+            "banner_link": "",
+            "view_all_text": "View all",
+            "view_all_link": "",
+            "show_tile_1": true,
+            "tile_1_title": "",
+            "tile_1_link": "",
+            "show_tile_2": true,
+            "tile_2_title": "",
+            "tile_2_link": "",
+            "show_tile_3": true,
+            "tile_3_title": "",
+            "tile_3_link": ""
           }
         }
       },
       "block_order": [
-        "mega_menu_image_GLzEec",
-        "mega_menu_image_nU7Vm4",
-        "mega_menu_image_xb96Pn",
-        "mega_menu_image_4tNnP7",
-        "mega_menu_image_98c4m6",
-        "mega_menu_image_JtekXN",
-        "mega_menu_image_qFhHUD",
-        "mega_menu_image_4CFMwz",
-        "mega_menu_image_TFiW77",
-        "mega_menu_image_RPGpPh"
+        "mega_menu_media_h6pP3e"
       ],
       "custom_css": [
         ".header__heading-link .h2 {font-size: 16px;}"
