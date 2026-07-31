@@ -1,3 +1,55 @@
+/* Mega menu image blocks (set via theme editor) */
+.mega-menu__images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  margin-top: 2.4rem;
+  padding-top: 2.4rem;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.mega-menu__image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 18rem;
+  max-width: 100%;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+}
+
+.mega-menu__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--inputs-radius, 0);
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.mega-menu__image--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mega-menu__image--placeholder svg {
+  width: 60%;
+  height: 60%;
+  opacity: 0.4;
+}
+
+.mega-menu__image-item:hover .mega-menu__image {
+  opacity: 0.85;
+}
+
+.mega-menu__image-title {
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
 .key-features__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
