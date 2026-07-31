@@ -33,12 +33,13 @@
     "header": {
       "type": "header",
       "blocks": {
-        "mega_menu_link_image_RPKLhr": {
-          "type": "mega_menu_link_image",
+        "mega_menu_column_image_hRdNNf": {
+          "type": "mega_menu_column_image",
           "settings": {
             "parent_menu_item": "Services Wrpapper",
-            "link_title": "dsd",
-            "image": "shopify://shop_images/blog_large_8e1bedac-9336-42f3-adc1-99dd8b4d8c85.jpg"
+            "column_title": "test",
+            "image": "shopify://shop_images/enquiry_form_bg.jpg",
+            "image_link": "#"
           }
         },
         "mega_menu_media_h6pP3e": {
@@ -66,7 +67,7 @@
         }
       },
       "block_order": [
-        "mega_menu_link_image_RPKLhr",
+        "mega_menu_column_image_hRdNNf",
         "mega_menu_media_h6pP3e"
       ],
       "custom_css": [
