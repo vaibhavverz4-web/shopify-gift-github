@@ -135,10 +135,10 @@
   background-color: rgba(var(--color-foreground), 0.04);
 }
 
-/* Small tile grid: 1 image = 1 column, 2+ images auto-fill into a row */
+
 .mega-menu__images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+ display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.6rem;
   margin-top: 1.6rem;
 }
