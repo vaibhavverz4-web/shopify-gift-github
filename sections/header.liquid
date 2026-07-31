@@ -89,6 +89,88 @@
       padding-top: 0.5rem;
     }
   }
+
+  /* Mega menu banner + tiles (mega_menu_media block) */
+  .mega-menu__media {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mega-menu__banner-link {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: underline;
+    margin-bottom: 0.5rem;
+  }
+
+  .mega-menu__banner-image-link {
+    display: block;
+  }
+
+  .mega-menu__banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .mega-menu__images {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .mega-menu__image-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    text-align: center;
+  }
+
+  .mega-menu__image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .mega-menu__image-title {
+    font-size: 1.3rem;
+  }
+
+  .mega-menu__image--placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Mega menu per-link thumbnail image (mega_menu_link_image block) */
+  .mega-menu__link-item--has-image {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mega-menu__link-item--has-image .mega-menu__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .mega-menu__link-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .mega-menu__link-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
 
 {%- style -%}
@@ -611,9 +693,32 @@
                         <div class="mega-menu__row page-width">
                           <ul class="mega-menu__list{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
                             {%- for childlink in link.links -%}
-                              <li>
+                              {%- liquid
+                                assign link_image_block = null
+                                for block in section.blocks
+                                  if block.type == 'mega_menu_link_image' and block.settings.parent_menu_item == link.title and block.settings.link_title == childlink.title
+                                    assign link_image_block = block
+                                  endif
+                                endfor
+                              -%}
+                              <li class="mega-menu__link-item{% if link_image_block != null %} mega-menu__link-item--has-image{% endif %}" {% if link_image_block != null %}{{ link_image_block.shopify_attributes }}{% endif %}>
                                 <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
-                                  {{ childlink.title | escape }}
+                                  {%- if link_image_block != null -%}
+                                    <span class="mega-menu__link-thumb">
+                                      {%- if link_image_block.settings.image != blank -%}
+                                        <img
+                                          src="{{ link_image_block.settings.image | image_url: width: 200 }}"
+                                          alt="{{ childlink.title | escape }}"
+                                          loading="lazy"
+                                          width="{{ link_image_block.settings.image.width }}"
+                                          height="{{ link_image_block.settings.image.height }}"
+                                        >
+                                      {%- else -%}
+                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                      {%- endif -%}
+                                    </span>
+                                  {%- endif -%}
+                                  <span class="mega-menu__link-text">{{ childlink.title | escape }}</span>
                                 </a>
                                 {%- if childlink.links != blank -%}
                                   <ul class="list-unstyled" role="list">
@@ -1067,7 +1172,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "max_blocks": 20,
+  "max_blocks": 30,
   "settings": [
     {
       "type": "select",
@@ -1412,6 +1517,33 @@
           "type": "url",
           "id": "tile_3_link",
           "label": "Tile 3 link"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_link_image",
+      "name": "Mega Menu Link Image",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add ONE block per sub-menu link that should show a small thumbnail image above it (Nike-style mega menu)."
+        },
+        {
+          "type": "text",
+          "id": "parent_menu_item",
+          "label": "Top-level menu item (exact title)",
+          "info": "e.g. Collaborations"
+        },
+        {
+          "type": "text",
+          "id": "link_title",
+          "label": "Link text (exact match)",
+          "info": "Must exactly match the sub-menu link title, e.g. Off White"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumbnail image"
         }
       ]
     }
