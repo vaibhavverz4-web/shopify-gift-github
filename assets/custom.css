@@ -111,6 +111,7 @@
   flex-wrap: wrap;
   gap: 2rem;
   flex: 0 0 auto;
+  width: 20%;
 }
 
 .mega-menu__image-item {
