@@ -37,7 +37,7 @@
           "type": "mega_menu_column_image",
           "settings": {
             "parent_menu_item": "Services Wrpapper",
-            "column_title": "test",
+            "column_title": "Ser1",
             "image": "shopify://shop_images/enquiry_form_bg.jpg",
             "image_link": "#"
           }
