@@ -216,6 +216,88 @@
                                     </li>
                                   {%- endfor -%}
                                 </ul>
+                                {%- liquid
+                                  assign mobile_mega_media = null
+                                  for block in section.blocks
+                                    if block.type == 'mega_menu_media' and block.settings.parent_menu_item == link.title
+                                      assign mobile_mega_media = block
+                                    endif
+                                  endfor
+                                -%}
+                                {%- if mobile_mega_media != null -%}
+                                  {%- liquid
+                                    assign mm = mobile_mega_media.settings
+                                    assign mobile_tile_count = 0
+                                    if mm.show_tile_1
+                                      assign mobile_tile_count = mobile_tile_count | plus: 1
+                                    endif
+                                    if mm.show_tile_2
+                                      assign mobile_tile_count = mobile_tile_count | plus: 1
+                                    endif
+                                    if mm.show_tile_3
+                                      assign mobile_tile_count = mobile_tile_count | plus: 1
+                                    endif
+                                  -%}
+                                  <div class="mega-menu__media menu-drawer__media">
+                                    {%- if mm.show_banner -%}
+                                      {%- if mm.view_all_link != blank or mm.view_all_text != blank -%}
+                                        <a href="{{ mm.view_all_link | default: link.url }}" class="mega-menu__banner-link">
+                                          {{ mm.view_all_text | default: 'View all' | escape }}
+                                        </a>
+                                      {%- endif -%}
+                                      <a href="{{ mm.banner_link | default: mm.view_all_link | default: link.url }}" class="mega-menu__banner-image-link">
+                                        {%- if mm.banner_image != blank -%}
+                                          <img
+                                            src="{{ mm.banner_image | image_url: width: 900 }}"
+                                            alt="{{ mm.banner_image.alt | escape }}"
+                                            loading="lazy"
+                                            width="{{ mm.banner_image.width }}"
+                                            height="{{ mm.banner_image.height }}"
+                                            class="mega-menu__banner-image"
+                                          >
+                                        {%- else -%}
+                                          <div class="mega-menu__banner-image mega-menu__image--placeholder">
+                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                          </div>
+                                        {%- endif -%}
+                                      </a>
+                                    {%- endif -%}
+                                    {%- if mobile_tile_count > 0 -%}
+                                      <div class="mega-menu__images">
+                                        {%- if mm.show_tile_1 -%}
+                                          <a href="{{ mm.tile_1_link | default: link.url }}" class="mega-menu__image-item">
+                                            {%- if mm.tile_1_image != blank -%}
+                                              <img src="{{ mm.tile_1_image | image_url: width: 600 }}" alt="{{ mm.tile_1_image.alt | default: mm.tile_1_title | escape }}" loading="lazy" width="{{ mm.tile_1_image.width }}" height="{{ mm.tile_1_image.height }}" class="mega-menu__image">
+                                            {%- else -%}
+                                              <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                            {%- endif -%}
+                                            {%- if mm.tile_1_title != blank -%}<span class="mega-menu__image-title">{{ mm.tile_1_title | escape }}</span>{%- endif -%}
+                                          </a>
+                                        {%- endif -%}
+                                        {%- if mm.show_tile_2 -%}
+                                          <a href="{{ mm.tile_2_link | default: link.url }}" class="mega-menu__image-item">
+                                            {%- if mm.tile_2_image != blank -%}
+                                              <img src="{{ mm.tile_2_image | image_url: width: 600 }}" alt="{{ mm.tile_2_image.alt | default: mm.tile_2_title | escape }}" loading="lazy" width="{{ mm.tile_2_image.width }}" height="{{ mm.tile_2_image.height }}" class="mega-menu__image">
+                                            {%- else -%}
+                                              <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                            {%- endif -%}
+                                            {%- if mm.tile_2_title != blank -%}<span class="mega-menu__image-title">{{ mm.tile_2_title | escape }}</span>{%- endif -%}
+                                          </a>
+                                        {%- endif -%}
+                                        {%- if mm.show_tile_3 -%}
+                                          <a href="{{ mm.tile_3_link | default: link.url }}" class="mega-menu__image-item">
+                                            {%- if mm.tile_3_image != blank -%}
+                                              <img src="{{ mm.tile_3_image | image_url: width: 600 }}" alt="{{ mm.tile_3_image.alt | default: mm.tile_3_title | escape }}" loading="lazy" width="{{ mm.tile_3_image.width }}" height="{{ mm.tile_3_image.height }}" class="mega-menu__image">
+                                            {%- else -%}
+                                              <div class="mega-menu__image mega-menu__image--placeholder">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                            {%- endif -%}
+                                            {%- if mm.tile_3_title != blank -%}<span class="mega-menu__image-title">{{ mm.tile_3_title | escape }}</span>{%- endif -%}
+                                          </a>
+                                        {%- endif -%}
+                                      </div>
+                                    {%- endif -%}
+                                  </div>
+                                {%- endif -%}
                               </div>
                             </div>
                           </details>
