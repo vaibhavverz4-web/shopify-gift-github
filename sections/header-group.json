@@ -68,13 +68,23 @@
             "title": "2",
             "link": "#"
           }
+        },
+        "mega_menu_image_RPGpPh": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "Catalog",
+            "image": "shopify://shop_images/md_view.jpg",
+            "title": "2",
+            "link": "#"
+          }
         }
       },
       "block_order": [
         "mega_menu_image_JtekXN",
         "mega_menu_image_qFhHUD",
         "mega_menu_image_4CFMwz",
-        "mega_menu_image_TFiW77"
+        "mega_menu_image_TFiW77",
+        "mega_menu_image_RPGpPh"
       ],
       "custom_css": [
         ".header__heading-link .h2 {font-size: 16px;}"
