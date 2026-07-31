@@ -100,7 +100,9 @@
             "image": "{{ block.repeater.image.value }}",
             "caption": "{{ block.repeater.sub_heading.value }}",
             "heading": "{{ block.repeater.heading.value }}",
-            "text": "{{ block.repeater.text | metafield_tag }}"
+            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
+            "button_label": "Button label",
+            "button_link": ""
           }
         }
       },
@@ -123,48 +125,11 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "multicolumn_C7XnWM": {
-      "type": "multicolumn",
-      "blocks": {
-        "column_MjXW4y": {
-          "type": "column",
-          "repeater": "{{ product.metafields.custom.multyrow.value }}",
-          "settings": {
-            "image": "{{ block.repeater.image.value }}",
-            "title": "{{ block.repeater.button | metafield_tag }}",
-            "text": "<p>{{ block.repeater.text | metafield_tag }}</p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column_MjXW4y"
-      ],
-      "name": "t:sections.multicolumn.presets.name",
-      "settings": {
-        "title": "Multicolumn",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "left",
-        "background_style": "primary",
-        "button_label": "Button label",
-        "button_link": "",
-        "color_scheme": "background-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     }
   },
   "order": [
     "main",
     "related-products",
-    "multirow_KcnyCf",
-    "multicolumn_C7XnWM"
+    "multirow_KcnyCf"
   ]
 }
