@@ -109,7 +109,7 @@
 .mega-menu__media {
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 54rem;
+  max-width: 60rem;
 }
 
 .mega-menu__banner-link {
@@ -135,12 +135,27 @@
   background-color: rgba(var(--color-foreground), 0.04);
 }
 
-
+/* Small tile grid: 1 image = 1 column, 2+ images auto-fill into a row */
 .mega-menu__images {
- display: grid;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.6rem;
   margin-top: 1.6rem;
+}
+
+/* Mobile drawer: images sit in a narrower column, so use 2 columns instead of 3 */
+.menu-drawer__media {
+  margin-top: 2rem;
+  max-width: 100%;
+}
+
+.menu-drawer__media .mega-menu__images {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.menu-drawer__media .mega-menu__banner-image {
+  aspect-ratio: 4 / 3;
 }
 
 .mega-menu__image-item {
@@ -156,7 +171,7 @@
 .mega-menu__image {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: var(--inputs-radius, 0);
   background-color: rgba(var(--color-foreground), 0.04);
@@ -167,7 +182,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
 }
 
 .mega-menu__image--placeholder svg {
