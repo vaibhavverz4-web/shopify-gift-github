@@ -36,7 +36,8 @@
         "mega_menu_image_JtekXN": {
           "type": "mega_menu_image",
           "settings": {
-            "parent_menu_item": "",
+            "parent_menu_item": "Test",
+            "image": "shopify://shop_images/enquiry_form_bg.jpg",
             "title": "Featured",
             "link": ""
           }
