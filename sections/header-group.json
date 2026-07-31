@@ -42,6 +42,15 @@
             "view_all_link": "#"
           }
         },
+        "mega_menu_banner_XEiJyT": {
+          "type": "mega_menu_banner",
+          "settings": {
+            "parent_menu_item": "Searvices",
+            "image": "shopify://shop_images/about_banner.jpg",
+            "view_all_label": "View all",
+            "view_all_link": "#"
+          }
+        },
         "mega_menu_image_JtekXN": {
           "type": "mega_menu_image",
           "settings": {
@@ -90,6 +99,7 @@
       },
       "block_order": [
         "mega_menu_banner_wUdmyr",
+        "mega_menu_banner_XEiJyT",
         "mega_menu_image_JtekXN",
         "mega_menu_image_qFhHUD",
         "mega_menu_image_4CFMwz",
