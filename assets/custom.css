@@ -105,22 +105,49 @@
   min-width: 0;
 }
 
-/* Mega menu image blocks (set via theme editor) */
-/* Auto-adjusts: 1 image = 1 column, 2+ images = multiple columns automatically */
+/* Mega menu media column: banner image + tile grid, set via theme editor */
+.mega-menu__media {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 54rem;
+}
+
+.mega-menu__banner-link {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  color: rgb(var(--color-foreground));
+}
+
+.mega-menu__banner-image-link {
+  display: block;
+}
+
+.mega-menu__banner-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--inputs-radius, 0);
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+/* Small tile grid: 1 image = 1 column, 2+ images auto-fill into a row */
 .mega-menu__images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 14rem);
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 1.6rem;
-  flex: 0 0 auto;
-  max-width: 32rem;
-  align-content: start;
+  margin-top: 1.6rem;
 }
 
 .mega-menu__image-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 14rem;
+  align-items: center;
+  text-align: center;
   text-decoration: none;
   color: rgb(var(--color-foreground));
   overflow: hidden;
@@ -128,8 +155,8 @@
 
 .mega-menu__image {
   display: block;
-  width: 14rem;
-  height: 14rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--inputs-radius, 0);
   background-color: rgba(var(--color-foreground), 0.04);
@@ -139,8 +166,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 14rem;
-  height: 14rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .mega-menu__image--placeholder svg {
@@ -149,14 +176,15 @@
   opacity: 0.4;
 }
 
-.mega-menu__image-item:hover .mega-menu__image {
+.mega-menu__image-item:hover .mega-menu__image,
+.mega-menu__banner-image-link:hover .mega-menu__banner-image {
   opacity: 0.85;
 }
 
 .mega-menu__image-title {
   margin-top: 1rem;
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 0.3rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
