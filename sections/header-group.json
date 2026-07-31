@@ -46,7 +46,7 @@
           "type": "mega_menu_image",
           "settings": {
             "parent_menu_item": "Home",
-            "image": "shopify://shop_images/enquiry_form_bg.jpg",
+            "image": "shopify://shop_images/md_view.jpg",
             "title": "2",
             "link": "#"
           }
