@@ -155,11 +155,13 @@
     padding-bottom: 3rem;
   }
 
-  .mega-menu__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 3rem 2.4rem;
-    align-items: start;
+  .mega-menu__content .mega-menu__row .mega-menu__list,
+  ul.mega-menu__list,
+  ul.mega-menu__list.mega-menu__list--condensed {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    gap: 3rem 2.4rem !important;
+    align-items: start !important;
   }
 
   .mega-menu__column {
