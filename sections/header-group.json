@@ -42,6 +42,24 @@
             "link": "#"
           }
         },
+        "mega_menu_image_qFhHUD": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "Home",
+            "image": "shopify://shop_images/enquiry_form_bg.jpg",
+            "title": "Featured",
+            "link": "#"
+          }
+        },
+        "mega_menu_image_4CFMwz": {
+          "type": "mega_menu_image",
+          "settings": {
+            "parent_menu_item": "Home",
+            "image": "shopify://shop_images/enquiry_form_bg.jpg",
+            "title": "Featured",
+            "link": "#"
+          }
+        },
         "mega_menu_image_TFiW77": {
           "type": "mega_menu_image",
           "settings": {
@@ -54,6 +72,8 @@
       },
       "block_order": [
         "mega_menu_image_JtekXN",
+        "mega_menu_image_qFhHUD",
+        "mega_menu_image_4CFMwz",
         "mega_menu_image_TFiW77"
       ],
       "custom_css": [
