@@ -548,6 +548,12 @@
                             {%- endfor -%}
                           </ul>
                           {%- liquid
+                            assign mega_menu_banner = null
+                            for block in section.blocks
+                              if block.type == 'mega_menu_banner' and block.settings.parent_menu_item == link.title
+                                assign mega_menu_banner = block
+                              endif
+                            endfor
                             assign mega_menu_images = ''
                             for block in section.blocks
                               if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title
@@ -555,39 +561,70 @@
                               endif
                             endfor
                           -%}
-                          {%- if mega_menu_images != '' -%}
-                            <div class="mega-menu__images">
-                              {%- for block in section.blocks -%}
-                                {%- if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title -%}
-                                  <a
-                                    {% if block.settings.link != blank %}
-                                      href="{{ block.settings.link }}"
-                                    {% else %}
-                                      href="{{ link.url }}"
-                                    {% endif %}
-                                    class="mega-menu__image-item"
-                                    {{ block.shopify_attributes }}
-                                  >
-                                    {%- if block.settings.image != blank -%}
-                                      <img
-                                        src="{{ block.settings.image | image_url: width: 600 }}"
-                                        alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
-                                        loading="lazy"
-                                        width="{{ block.settings.image.width }}"
-                                        height="{{ block.settings.image.height }}"
-                                        class="mega-menu__image"
-                                      >
-                                    {%- else -%}
-                                      <div class="mega-menu__image mega-menu__image--placeholder">
-                                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                                      </div>
-                                    {%- endif -%}
-                                    {%- if block.settings.title != blank -%}
-                                      <span class="mega-menu__image-title">{{ block.settings.title | escape }}</span>
-                                    {%- endif -%}
+                          {%- if mega_menu_banner != null or mega_menu_images != '' -%}
+                            <div class="mega-menu__media">
+                              {%- if mega_menu_banner != null -%}
+                                {%- if mega_menu_banner.settings.view_all_link != blank or mega_menu_banner.settings.view_all_label != blank -%}
+                                  <a href="{{ mega_menu_banner.settings.view_all_link | default: link.url }}" class="mega-menu__banner-link">
+                                    {{ mega_menu_banner.settings.view_all_label | default: 'View all' | escape }}
                                   </a>
                                 {%- endif -%}
-                              {%- endfor -%}
+                                <a
+                                  href="{{ mega_menu_banner.settings.view_all_link | default: link.url }}"
+                                  class="mega-menu__banner-image-link"
+                                  {{ mega_menu_banner.shopify_attributes }}
+                                >
+                                  {%- if mega_menu_banner.settings.image != blank -%}
+                                    <img
+                                      src="{{ mega_menu_banner.settings.image | image_url: width: 900 }}"
+                                      alt="{{ mega_menu_banner.settings.image.alt | escape }}"
+                                      loading="lazy"
+                                      width="{{ mega_menu_banner.settings.image.width }}"
+                                      height="{{ mega_menu_banner.settings.image.height }}"
+                                      class="mega-menu__banner-image"
+                                    >
+                                  {%- else -%}
+                                    <div class="mega-menu__banner-image mega-menu__image--placeholder">
+                                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    </div>
+                                  {%- endif -%}
+                                </a>
+                              {%- endif -%}
+                              {%- if mega_menu_images != '' -%}
+                                <div class="mega-menu__images">
+                                  {%- for block in section.blocks -%}
+                                    {%- if block.type == 'mega_menu_image' and block.settings.parent_menu_item == link.title -%}
+                                      <a
+                                        {% if block.settings.link != blank %}
+                                          href="{{ block.settings.link }}"
+                                        {% else %}
+                                          href="{{ link.url }}"
+                                        {% endif %}
+                                        class="mega-menu__image-item"
+                                        {{ block.shopify_attributes }}
+                                      >
+                                        {%- if block.settings.image != blank -%}
+                                          <img
+                                            src="{{ block.settings.image | image_url: width: 600 }}"
+                                            alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                                            loading="lazy"
+                                            width="{{ block.settings.image.width }}"
+                                            height="{{ block.settings.image.height }}"
+                                            class="mega-menu__image"
+                                          >
+                                        {%- else -%}
+                                          <div class="mega-menu__image mega-menu__image--placeholder">
+                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                          </div>
+                                        {%- endif -%}
+                                        {%- if block.settings.title != blank -%}
+                                          <span class="mega-menu__image-title">{{ block.settings.title | escape }}</span>
+                                        {%- endif -%}
+                                      </a>
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                </div>
+                              {%- endif -%}
                             </div>
                           {%- endif -%}
                         </div>
@@ -1144,12 +1181,44 @@
       "type": "@app"
     },
     {
+      "type": "mega_menu_banner",
+      "name": "Mega Menu Banner",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Large banner image at the top of the mega menu image area, with a 'View all' link above it. Type the exact top-level menu title below to control which menu it appears under."
+        },
+        {
+          "type": "text",
+          "id": "parent_menu_item",
+          "label": "Parent menu item (exact title)",
+          "info": "Must exactly match a top-level menu item title, e.g. Home, Catalog."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "view_all_label",
+          "label": "\"View all\" link text",
+          "default": "View all"
+        },
+        {
+          "type": "url",
+          "id": "view_all_link",
+          "label": "\"View all\" link"
+        }
+      ]
+    },
+    {
       "type": "mega_menu_image",
       "name": "Mega Menu Image",
       "settings": [
         {
           "type": "paragraph",
-          "content": "Shows an image tile inside the mega menu dropdown. Type the exact top-level menu title below (e.g. Home) to control which menu this image appears under."
+          "content": "Shows a small image tile below the banner. Type the exact top-level menu title below (e.g. Home) to control which menu this image appears under."
         },
         {
           "type": "text",
