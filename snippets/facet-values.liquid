@@ -1,0 +1,66 @@
+{%- comment -%}
+  Renders the values of a "list" type filter.
+
+  Accepts:
+  - filter: {Object} a single entry from collection.filters / search.filters
+  - filter_index: {Number} loop index, used to build unique input ids
+
+  Usage:
+  {% render 'facet-values', filter: filter, filter_index: forloop.index %}
+{%- endcomment -%}
+
+{%- liquid
+  assign label_down = filter.label | downcase
+  assign is_swatch = false
+  if label_down contains 'color' or label_down contains 'colour'
+    assign is_swatch = true
+  endif
+-%}
+
+<ul class="facet-values{% if is_swatch %} facet-values--swatch{% endif %} list-unstyled" role="list">
+  {%- for value in filter.values -%}
+    {%- liquid
+      assign input_id = 'Filter-' | append: filter.param_name | append: '-' | append: forloop.index
+      assign is_disabled = false
+      if value.count == 0 and value.active == false
+        assign is_disabled = true
+      endif
+
+      comment
+        Swatch source, in order of preference:
+        1. value.swatch.image  — image swatch set in Search & Discovery
+        2. value.swatch.color  — colour swatch set in Search & Discovery
+        3. the value label itself, if it happens to be a valid CSS colour name
+      endcomment
+      assign fallback_color = value.label | downcase | strip | replace: ' ', ''
+    -%}
+
+    <li class="facet-values__item{% if is_disabled %} facet-values__item--disabled{% endif %}">
+      <input
+        type="checkbox"
+        class="facet-values__input"
+        name="{{ value.param_name }}"
+        value="{{ value.value }}"
+        id="{{ input_id }}"
+        {% if value.active %}checked{% endif %}
+        {% if is_disabled %}disabled{% endif %}
+      >
+      <label
+        for="{{ input_id }}"
+        class="facet-values__label"
+        {% if is_swatch %}
+          style="
+            --swatch-color: {% if value.swatch.color %}{{ value.swatch.color }}{% else %}{{ fallback_color }}{% endif %};
+            {% if value.swatch.image %}--swatch-image: url({{ value.swatch.image | image_url: width: 60 }});{% endif %}
+          "
+        {% endif %}
+      >
+        <span class="facet-values__marker" aria-hidden="true"></span>
+        <span class="facet-values__text">
+          {{- value.label -}}
+          <span class="facet-values__count">({{ value.count }})</span>
+        </span>
+      </label>
+    </li>
+  {%- endfor -%}
+</ul>
