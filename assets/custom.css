@@ -1204,3 +1204,131 @@
     display: none;
   }
 }
+/* ==========================================================================
+   Facet values — colour swatches + checkbox lists
+   Load after Dawn's component-facets.css so these rules win.
+   ========================================================================== */
+
+.facet-values {
+  margin: 0 0 2.4rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.facet-values__item {
+  list-style: none;
+  margin: 0;
+}
+
+/* The real input stays in the DOM for the form + keyboard focus,
+   but is visually replaced by .facet-values__marker */
+.facet-values__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.facet-values__label {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.85);
+  transition: color 0.15s ease;
+}
+
+.facet-values__label:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.facet-values__count {
+  margin-left: 0.4rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+/* --- Checkbox variant (Brand, Sizes, Availability) ---------------------- */
+
+.facet-values__marker {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.55);
+  background-color: rgb(var(--color-background));
+  position: relative;
+}
+
+.facet-values__input:checked + .facet-values__label .facet-values__marker::after {
+  content: '';
+  position: absolute;
+  inset: 0.3rem;
+  background-color: rgb(var(--color-foreground));
+}
+
+/* --- Swatch variant (Color) --------------------------------------------- */
+
+.facet-values--swatch {
+  gap: 1.2rem;
+}
+
+.facet-values--swatch .facet-values__marker {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  background-color: var(--swatch-color, rgba(var(--color-foreground), 0.1));
+  background-image: var(--swatch-image, none);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 0 0 rgb(var(--color-background)), 0 0 0 0 rgb(var(--color-foreground));
+  transition: box-shadow 0.15s ease;
+}
+
+.facet-values--swatch .facet-values__input:checked + .facet-values__label .facet-values__marker {
+  box-shadow: 0 0 0 0.2rem rgb(var(--color-background)), 0 0 0 0.35rem rgb(var(--color-foreground));
+}
+
+.facet-values--swatch .facet-values__input:checked + .facet-values__label .facet-values__marker::after {
+  content: none;
+}
+
+/* --- Focus + disabled --------------------------------------------------- */
+
+.facet-values__input:focus-visible + .facet-values__label .facet-values__marker {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+}
+
+.facet-values__item--disabled .facet-values__label {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* --- Mobile drawer ------------------------------------------------------ */
+
+@media screen and (max-width: 749px) {
+  .facet-values__label {
+    font-size: 1.5rem;
+    padding: 0.4rem 0;
+  }
+
+  .facet-values--swatch {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+  }
+
+  .facet-values--swatch .facet-values__text {
+    display: none;
+  }
+}
