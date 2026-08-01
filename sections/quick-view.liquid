@@ -1,0 +1,198 @@
+{% comment %}
+  Quick view content.
+
+  Fetched by assets/card-product-custom.js through the Section Rendering API:
+  /products/{handle}?section_id=quick-view
+
+  The element marked [data-quick-view-content] is what gets injected into
+  snippets/quick-view-modal.liquid — keep that attribute.
+{% endcomment %}
+
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+-%}
+
+<div class="quick-view" data-quick-view-content data-product-url="{{ product.url }}">
+  <div class="quick-view__media">
+    {%- if product.featured_media -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 800 }}"
+        srcset="
+          {{ product.featured_media | image_url: width: 400 }} 400w,
+          {{ product.featured_media | image_url: width: 800 }} 800w
+        "
+        sizes="(min-width: 750px) 40vw, 90vw"
+        alt="{{ product.featured_media.alt | escape }}"
+        width="{{ product.featured_media.width }}"
+        height="{{ product.featured_media.height }}"
+        class="quick-view__image"
+        data-quick-view-image
+      >
+    {%- else -%}
+      {{ 'product-apparel-1' | placeholder_svg_tag: 'quick-view__image placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if product.media.size > 1 -%}
+      <ul class="quick-view__thumbs list-unstyled" role="list">
+        {%- for media in product.media limit: 5 -%}
+          <li>
+            <button
+              type="button"
+              class="quick-view__thumb{% if forloop.first %} is-active{% endif %}"
+              data-quick-view-thumb
+              data-full="{{ media | image_url: width: 800 }}"
+            >
+              <img src="{{ media | image_url: width: 120 }}" alt="{{ media.alt | escape }}" width="60" height="75" loading="lazy">
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  <div class="quick-view__details">
+    {%- if product.type != blank -%}
+      <p class="card__eyebrow">{{ product.type | escape }}</p>
+    {%- endif -%}
+
+    <h2 class="quick-view__title h2">{{ product.title | escape }}</h2>
+
+    <div class="quick-view__price" data-quick-view-price>
+      {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+    </div>
+
+    {%- if product.description != blank -%}
+      <div class="quick-view__description rte">
+        {{ product.description | strip_html | truncatewords: 45 }}
+      </div>
+    {%- endif -%}
+
+    <form method="post" action="{{ routes.cart_add_url }}" class="quick-view__form" data-quick-view-form novalidate>
+      <input type="hidden" name="form_type" value="product">
+      <input type="hidden" name="utf8" value="✓">
+      <input type="hidden" name="id" value="{{ variant.id }}" data-quick-view-variant-id>
+
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          {%- liquid
+            assign option_name = option.name | downcase
+            assign is_color = false
+            if option_name contains 'color' or option_name contains 'colour'
+              assign is_color = true
+            endif
+          -%}
+          <div class="quick-view__option">
+            <span class="quick-view__option-label">{{ option.name | escape }}</span>
+
+            {%- if is_color -%}
+              <ul class="quick-view__swatches list-unstyled" role="list">
+                {%- for value in option.values -%}
+                  <li>
+                    <label class="quick-view__swatch{% if option.selected_value == value %} is-active{% endif %}" title="{{ value | escape }}">
+                      <input
+                        type="radio"
+                        name="option-{{ option.position }}"
+                        value="{{ value | escape }}"
+                        data-quick-view-option
+                        {% if option.selected_value == value %}checked{% endif %}
+                      >
+                      <span
+                        style="
+                          {%- if value.swatch.image -%}
+                            background-image: url({{ value.swatch.image | image_url: width: 60 }});
+                          {%- elsif value.swatch.color -%}
+                            background-color: {{ value.swatch.color }};
+                          {%- else -%}
+                            background-color: {{ value | handle | replace: '-', ' ' }};
+                          {%- endif -%}
+                        "
+                      ></span>
+                      <span class="visually-hidden">{{ value | escape }}</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <div class="select">
+                <select class="select__select" name="option-{{ option.position }}" data-quick-view-option aria-label="{{ option.name | escape }}">
+                  {%- for value in option.values -%}
+                    <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
+                      {{ value | escape }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <div class="quick-view__buy">
+        <div class="quick-view__quantity">
+          <button type="button" data-quantity-change="-1" aria-label="{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}">
+            {% render 'icon-minus' %}
+          </button>
+          <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="{{ 'products.product.quantity.label' | t }}">
+          <button type="button" data-quantity-change="1" aria-label="{{ 'products.product.quantity.increase' | t: product: product.title | escape }}">
+            {% render 'icon-plus' %}
+          </button>
+        </div>
+
+        <button
+          type="submit"
+          name="add"
+          class="button button--full-width button--primary"
+          data-quick-view-submit
+          {% unless variant.available %}disabled{% endunless %}
+        >
+          <span data-quick-view-submit-text>
+            {%- if variant.available -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </span>
+          <div class="loading-overlay__spinner hidden">
+            <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <p class="quick-view__error form__message" data-quick-view-error hidden></p>
+    </form>
+
+    {%- comment -%}
+      Back-in-stock. PW Stock Notify mounts into its own container; this exposes
+      one inside quick view too. Harmless if the app is not installed.
+    {%- endcomment -%}
+    <div data-quick-view-notify {% if variant.available %}hidden{% endif %}>
+      <div
+        class="pw-stock-notify"
+        data-product-id="{{ product.id }}"
+        data-variant-id="{{ variant.id }}"
+        data-product-handle="{{ product.handle }}"
+      ></div>
+    </div>
+
+    <a class="link quick-view__full-details" href="{{ product.url }}">
+      {{ 'products.product.view_full_details' | t }}
+    </a>
+
+    <script type="application/json" data-quick-view-variants>
+      {{ product.variants | json }}
+    </script>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Quick view",
+  "settings": []
+}
+{% endschema %}
