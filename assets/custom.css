@@ -1029,3 +1029,48 @@
 .pagination__item--prev .icon-caret {
   transform: rotate(-90deg);
 }
+
+/* --- Filter + results pill at the top of the sidebar --------------------- */
+
+.facets-vertical .facets__summary-pill {
+  display: inline-flex;
+  align-items: stretch;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.14);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background: rgb(var(--color-background));
+}
+
+.facets-vertical .facets__summary-pill-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.4rem;
+  font-size: 1.4rem;
+  color: rgb(var(--color-foreground));
+  white-space: nowrap;
+}
+
+.facets-vertical .facets__summary-pill-label .icon-filter {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.facets-vertical .facets__summary-pill-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 1.6rem;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.45);
+  text-transform: capitalize;
+  white-space: nowrap;
+  border-left: 1px solid rgba(var(--color-foreground), 0.14);
+}
+
+/* The sort bar already prints a count; the sidebar pill replaces it on desktop */
+@media screen and (min-width: 990px) {
+  .facets-vertical-sort .product-count-vertical {
+    display: none;
+  }
+}
