@@ -52,6 +52,25 @@
             {%- endif -%}
             {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
             {%- if filter_type == 'vertical' -%}
+              {% comment %}
+                Filter + result count pill at the top of the sidebar (added).
+                The count mirrors .product-count-vertical in the sort bar, which
+                custom.css hides on desktop so it is not shown twice.
+              {% endcomment %}
+              <div class="facets__summary-pill" role="status">
+                <span class="facets__summary-pill-label">
+                  {% render 'icon-filter' %}
+                  {{ 'products.facets.filter_button' | t }}
+                </span>
+                <span class="facets__summary-pill-count">
+                  {%- if results.results_count -%}
+                    {{ 'templates.search.results_with_count' | t: terms: results.terms, count: results.results_count }}
+                  {%- else -%}
+                    {{ 'templates.search.results_with_count' | t: count: results.products_count }}
+                  {%- endif -%}
+                </span>
+              </div>
+
               <div class="active-facets active-facets-desktop">
                 <div class="active-facets-vertical-filter">
                   {%- unless results.filters == empty -%}
