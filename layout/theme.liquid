@@ -33,9 +33,6 @@
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'card-product-custom.js' | asset_url }}" defer="defer"></script>
-
-
-    
     {{ content_for_header }}
 
     {%- liquid
@@ -311,5 +308,7 @@
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    {%- comment -%} Quick view modal, shared by every product card on the site {%- endcomment -%}
+    {% render 'quick-view-modal' %}
   </body>
 </html>
