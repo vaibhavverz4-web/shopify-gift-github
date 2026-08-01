@@ -1,5 +1,6 @@
 {% comment %}
   Renders a product card
+
   Accepts:
   - card_product: {Object} Product Liquid object (optional)
   - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
@@ -30,6 +31,38 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+  -%}
+
+  {%- comment -%} ---------- Custom card options (added) ----------
+    Every flag defaults to on, so the six existing `render 'card-product'`
+    calls in this theme keep working unchanged. A section can switch any
+    feature off by passing false, e.g. show_hover_overlay: false
+  {%- endcomment -%}
+  {%- liquid
+    assign card_actions = show_card_actions | default: true, allow_false: true
+    assign card_overlay = show_hover_overlay | default: true, allow_false: true
+    assign card_wishlist = show_wishlist | default: true, allow_false: true
+    assign card_quick_view = show_quick_view | default: true, allow_false: true
+    assign card_add_to_cart = show_add_to_cart | default: true, allow_false: true
+    assign card_description = show_description | default: true, allow_false: true
+    assign card_swatches = show_swatches | default: true, allow_false: true
+    assign card_eyebrow = show_eyebrow | default: true, allow_false: true
+
+    assign card_short_description = card_product.metafields.custom.short_description.value
+    if card_short_description == blank
+      assign card_short_description = card_product.description | strip_html | truncatewords: 22
+    endif
+
+    assign card_variant = card_product.selected_or_first_available_variant
+
+    assign card_color_option = null
+    for card_option in card_product.options_with_values
+      assign card_option_name = card_option.name | downcase
+      if card_option_name contains 'color' or card_option_name contains 'colour'
+        assign card_color_option = card_option
+        break
+      endif
+    endfor
   -%}
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
@@ -88,7 +121,7 @@
                   src="{{ card_product.media[1] | image_url: width: 533 }}"
                   sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                   alt=""
-                  class="motion-reduce"
+                  class="motion-reduce card__media-secondary"
                   loading="lazy"
                   width="{{ card_product.media[1].width }}"
                   height="{{ card_product.media[1].height }}"
@@ -133,9 +166,92 @@
             {%- endif -%}
           </div>
         </div>
+
+        {%- comment -%} ---------- Hover overlay + action icons (added) ---------- {%- endcomment -%}
+        {%- if card_product.featured_media -%}
+        {%- if card_actions or card_overlay -%}
+          <div class="card__hover-layer">
+            {%- if card_overlay -%}
+              <div class="card__hover" aria-hidden="true">
+                <p class="card__hover-title">{{ card_product.title | escape }}</p>
+                {%- if card_short_description != blank -%}
+                  <p class="card__hover-description">{{ card_short_description }}</p>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if card_actions -%}
+              <div class="card__actions">
+                {%- if card_add_to_cart -%}
+                  {%- if card_product.variants.size == 1 and card_variant.available -%}
+                    <button
+                      type="button"
+                      class="card-action"
+                      data-shop-add-to-cart
+                      data-variant-id="{{ card_variant.id }}"
+                      aria-label="{{ 'products.product.add_to_cart' | t }} - {{ card_product.title | escape }}"
+                    >
+                      <svg class="card-action__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                        <path d="M3.25 4.5h1.9l1.6 8.35a1.2 1.2 0 0 0 1.18.97h6.06a1.2 1.2 0 0 0 1.18-.95l1.13-5.37H5.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="8.4" cy="16.4" r="1.1" fill="currentColor"/>
+                        <circle cx="14.2" cy="16.4" r="1.1" fill="currentColor"/>
+                      </svg>
+                      <span class="card-action__spinner" aria-hidden="true"></span>
+                    </button>
+                  {%- else -%}
+                    {%- comment -%} Several variants: one has to be chosen first {%- endcomment -%}
+                    <button
+                      type="button"
+                      class="card-action"
+                      data-shop-quick-view
+                      data-product-url="{{ card_product.url }}"
+                      aria-label="{{ 'products.product.choose_options' | t }} - {{ card_product.title | escape }}"
+                    >
+                      <svg class="card-action__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                        <path d="M3.25 4.5h1.9l1.6 8.35a1.2 1.2 0 0 0 1.18.97h6.06a1.2 1.2 0 0 0 1.18-.95l1.13-5.37H5.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="8.4" cy="16.4" r="1.1" fill="currentColor"/>
+                        <circle cx="14.2" cy="16.4" r="1.1" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if card_wishlist -%}
+                  {%- comment -%}
+                    Uses the theme's existing iWish snippet, snippets/wishlist-app-links.liquid,
+                    which the app installed but nothing was rendering. Heart drawn in CSS.
+                  {%- endcomment -%}
+                  <span class="card-action card-action--wishlist">
+                    {%- render 'wishlist-app-links', linkType: 'list-product', product: card_product -%}
+                  </span>
+                {%- endif -%}
+
+                {%- if card_quick_view -%}
+                  <button
+                    type="button"
+                    class="card-action"
+                    data-shop-quick-view
+                    data-product-url="{{ card_product.url }}"
+                    aria-label="{{ 'products.product.view_full_details' | t }} - {{ card_product.title | escape }}"
+                  >
+                    <svg class="card-action__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                      <path d="M1.9 10S5.1 5.1 10 5.1 18.1 10 18.1 10 14.9 14.9 10 14.9 1.9 10 1.9 10Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                      <circle cx="10" cy="10" r="2.35" stroke="currentColor" stroke-width="1.3"/>
+                    </svg>
+                  </button>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- endif -%}
       </div>
       <div class="card__content">
         <div class="card__information">
+          {%- comment -%} ---------- Product type eyebrow (added) ---------- {%- endcomment -%}
+          {%- if card_eyebrow and card_product.type != blank -%}
+            <p class="card__eyebrow">{{ card_product.type | escape }}</p>
+          {%- endif -%}
           <h3
             class="card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
             {% if card_product.featured_media or settings.card_style == 'card' %}
@@ -157,7 +273,14 @@
               <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
             {%- endif -%}
 
-            <span class="caption-large light">{{ block.settings.description | escape }}</span>
+            {%- comment -%}
+              Was: {{ block.settings.description }} — `block` is not defined in this
+              snippet, so that line always rendered empty. Replaced with the real
+              product description (or a custom.short_description metafield).
+            {%- endcomment -%}
+            {%- if card_description and card_short_description != blank -%}
+              <p class="card__description caption">{{ card_short_description }}</p>
+            {%- endif -%}
 
             {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
               {% liquid
@@ -193,6 +316,29 @@
                   {{ 'accessibility.total_reviews' | t -}}
                 </span>
               </p>
+            {%- endif -%}
+
+            {%- comment -%} ---------- Colour swatches (added) ---------- {%- endcomment -%}
+            {%- if card_swatches and card_color_option -%}
+              <ul class="card__swatches" role="list">
+                {%- for value in card_color_option.values limit: 5 -%}
+                  <li
+                    class="card__swatch"
+                    title="{{ value | escape }}"
+                    style="
+                      {%- if value.swatch.image -%}
+                        background-image: url({{ value.swatch.image | image_url: width: 40 }});
+                      {%- elsif value.swatch.color -%}
+                        background-color: {{ value.swatch.color }};
+                      {%- else -%}
+                        background-color: {{ value | handle | replace: '-', ' ' }};
+                      {%- endif -%}
+                    "
+                  >
+                    <span class="visually-hidden">{{ value | escape }}</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
             {%- endif -%}
 
             {% render 'price', product: card_product, price_class: '' %}
