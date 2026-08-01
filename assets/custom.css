@@ -953,3 +953,72 @@
     padding-right: 0;
   }
 }
+
+/* ==========================================================================
+   Pagination — circular pills
+   Restyles the theme's existing snippets/pagination.liquid markup.
+   ========================================================================== */
+
+.pagination__list {
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.pagination__item {
+  width: 4rem;
+  height: 4rem;
+  min-width: 4rem;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.5);
+  border-radius: 50%;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Dawn draws a small underline under the current and hovered page — not wanted here */
+.pagination__item--current::after,
+.pagination__item:hover::after {
+  display: none;
+}
+
+.pagination__item:hover {
+  color: rgb(var(--color-foreground));
+  background: rgba(var(--color-foreground), 0.05);
+}
+
+.pagination__item--current,
+.pagination__item--current:hover {
+  color: #fff;
+  background: var(--card-accent, #9a7f52);
+  border-color: var(--card-accent, #9a7f52);
+}
+
+/* Prev / next arrows: filled circle, caret rotated to point sideways */
+.pagination__item-arrow {
+  background: rgba(var(--color-foreground), 0.05);
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.pagination__item-arrow:hover {
+  background: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+}
+
+.pagination__item-arrow .icon-caret {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* The theme names them the other way round: --next is the previous link */
+.pagination__item--next .icon-caret {
+  transform: rotate(90deg);
+}
+
+.pagination__item--prev .icon-caret {
+  transform: rotate(-90deg);
+}
