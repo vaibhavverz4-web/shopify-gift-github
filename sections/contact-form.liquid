@@ -152,16 +152,14 @@
             name="contact[Country]"
             autocomplete="country"
           >
-            <option value="">{{ 'templates.contact.form.country' | t }}</option>
+            <option value="">
+              {{ 'templates.contact.form.country' | t }}
+            </option>
             {{ all_country_option_tags }}
           </select>
 
           {% render 'icon-caret' %}
         </div>
-
-        <label class="form__label field__label" for="ContactForm-country">
-          {{ 'templates.contact.form.country' | t }}
-        </label>
       </div>
 
       <div class="field">
