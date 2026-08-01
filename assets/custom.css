@@ -216,6 +216,13 @@
   --card-ink-soft: #6b7280;
   --card-accent: #9a7f52;
   --card-heart: #b3261e;
+
+  /* Pagination — taken from Figma */
+  --pagination-active-bg: #8c734b;
+  --pagination-active-text: #ffffff;
+  --pagination-text: #adadad;
+  --pagination-arrow-bg: #f2f2f2;
+  --pagination-arrow-icon: #8c734b;
   --card-overlay-from: rgba(16, 24, 40, 0.15);
   --card-overlay-to: rgba(16, 24, 40, 0.78);
 }
@@ -973,7 +980,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  color: rgba(var(--color-foreground), 0.5);
+  color: var(--pagination-text);
   border-radius: 50%;
   border: 1px solid transparent;
   text-decoration: none;
@@ -987,26 +994,26 @@
 }
 
 .pagination__item:hover {
-  color: rgb(var(--color-foreground));
-  background: rgba(var(--color-foreground), 0.05);
+  color: var(--pagination-active-bg);
 }
 
 .pagination__item--current,
 .pagination__item--current:hover {
-  color: #fff;
-  background: var(--card-accent, #9a7f52);
-  border-color: var(--card-accent, #9a7f52);
+  color: var(--pagination-active-text);
+  background: var(--pagination-active-bg);
+  border-color: var(--pagination-active-bg);
 }
 
-/* Prev / next arrows: filled circle, caret rotated to point sideways */
+/* Prev / next arrows */
 .pagination__item-arrow {
-  background: rgba(var(--color-foreground), 0.05);
-  color: rgba(var(--color-foreground), 0.65);
+  background: var(--pagination-arrow-bg);
+  color: var(--pagination-arrow-icon);
 }
 
 .pagination__item-arrow:hover {
-  background: rgba(var(--color-foreground), 0.1);
-  color: rgb(var(--color-foreground));
+  background: var(--pagination-arrow-bg);
+  color: var(--pagination-active-bg);
+  filter: brightness(0.96);
 }
 
 .pagination__item-arrow .icon-caret {
