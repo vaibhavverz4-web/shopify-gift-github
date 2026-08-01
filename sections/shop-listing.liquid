@@ -1,0 +1,303 @@
+{{ 'shop-listing.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'shop-listing.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign has_filters = false
+  if collection.filters.size > 0 and section.settings.enable_filtering
+    assign has_filters = true
+  endif
+-%}
+
+<div
+  class="shop-listing shop-listing--{{ section.settings.sidebar_position }}{% if has_filters == false %} shop-listing--no-sidebar{% endif %}"
+  id="ShopListing-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="shop-listing"
+  style="--shop-columns-desktop: {{ section.settings.columns_desktop }}; --shop-columns-mobile: {{ section.settings.columns_mobile }}; --shop-padding-top: {{ section.settings.padding_top }}px; --shop-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="shop-listing__inner page-width">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+
+      {%- comment -%} ----- Toolbar: filter toggle, result count, sorting ----- {%- endcomment -%}
+      <div class="shop-toolbar">
+        <div class="shop-toolbar__left">
+          {%- if has_filters -%}
+            <button
+              type="button"
+              class="shop-toolbar__filter-btn"
+              data-shop-filter-toggle
+              aria-expanded="false"
+              aria-controls="ShopFacets-{{ section.id }}"
+            >
+              {%- render 'shop-icon', icon: 'filter' -%}
+              <span>{{ 'shop.filter' | t }}</span>
+            </button>
+          {%- endif -%}
+
+          <p class="shop-toolbar__count" id="ShopResultsCount-{{ section.id }}" role="status">
+            {{- collection.products_count }}
+            {% if collection.products_count == 1 -%}
+              {{ 'shop.result' | t }}
+            {%- else -%}
+              {{ 'shop.results' | t }}
+            {%- endif -%}
+          </p>
+        </div>
+
+        {%- if section.settings.enable_sorting -%}
+          <div class="shop-toolbar__right">
+            <label class="visually-hidden" for="ShopSortBy-{{ section.id }}">
+              {{ 'shop.sort_by' | t }}
+            </label>
+            <div class="shop-select">
+              <select
+                name="sort_by"
+                id="ShopSortBy-{{ section.id }}"
+                class="shop-select__input"
+                form="ShopFacetForm-{{ section.id }}"
+                data-shop-sort
+              >
+                {%- for option in collection.sort_options -%}
+                  {%- liquid
+                    assign label = option.name
+                    if option.value == 'manual' or option.value == 'best-selling'
+                      assign label = section.settings.recommended_label
+                    endif
+                  -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ label }}
+                  </option>
+                {%- endfor -%}
+              </select>
+              {%- render 'shop-icon', icon: 'chevron' -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="shop-layout">
+        {%- comment -%} ----- Sidebar facets ----- {%- endcomment -%}
+        {%- if has_filters -%}
+          <aside
+            class="shop-sidebar"
+            id="ShopFacets-{{ section.id }}"
+            data-shop-sidebar
+            aria-label="{{ 'shop.filters' | t }}"
+          >
+            {%- render 'shop-facets', section: section, results: collection, sort_by: sort_by -%}
+          </aside>
+          <div class="shop-sidebar__overlay" data-shop-filter-close hidden></div>
+        {%- endif -%}
+
+        {%- comment -%} ----- Product grid ----- {%- endcomment -%}
+        <div class="shop-results" id="ShopResults-{{ section.id }}">
+          {%- if collection.products.size == 0 -%}
+            <div class="shop-empty">
+              <p class="shop-empty__title">{{ 'shop.empty_title' | t }}</p>
+              <p class="shop-empty__text">
+                {{ 'shop.empty_text' | t }}
+              </p>
+              <a class="shop-link" href="{{ collection.url }}">
+                {{ 'shop.clear_all' | t }}
+              </a>
+            </div>
+          {%- else -%}
+            <ul
+              class="shop-grid"
+              id="ShopProductGrid-{{ section.id }}"
+              role="list"
+            >
+              {%- for product in collection.products -%}
+                <li class="shop-grid__item">
+                  {%- render 'shop-card-product',
+                    product: product,
+                    section: section,
+                    lazy: forloop.index0,
+                    image_ratio: section.settings.image_ratio
+                  -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            {%- if paginate.pages > 1 -%}
+              {%- render 'shop-pagination', paginate: paginate -%}
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+
+  {%- if section.settings.show_quick_view or section.settings.show_add_to_cart -%}
+    {%- render 'shop-quick-view-modal' -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Shop listing",
+  "class": "section section-shop-listing",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 36,
+      "step": 3,
+      "default": 9,
+      "label": "Products per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2",
+      "label": "Columns on mobile"
+    },
+    {
+      "type": "select",
+      "id": "sidebar_position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "label": "Filter sidebar position"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "portrait",
+      "label": "Image ratio"
+    },
+    {
+      "type": "header",
+      "content": "Filtering and sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering",
+      "info": "Manage filters in Search & Discovery."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "text",
+      "id": "recommended_label",
+      "default": "Recommended",
+      "label": "Label for the default sort option"
+    },
+    {
+      "type": "text",
+      "id": "category_filter_handle",
+      "default": "filter.p.product_type",
+      "label": "Single-select (radio) filter parameter",
+      "info": "This filter renders as radio buttons with an “All” option, like the Categories group in the design."
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show second image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hover_details",
+      "default": true,
+      "label": "Show title and short description on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "default": true,
+      "label": "Show add to cart icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "default": true,
+      "label": "Show wishlist icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "default": true,
+      "label": "Show quick view icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show vendor instead of product type"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "default": true,
+      "label": "Show colour swatches"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 60
+    }
+  ]
+}
+{% endschema %}
