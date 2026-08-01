@@ -104,6 +104,25 @@
         >
         <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
       </div>
+      
+
+      <div class="field">
+          <div class="select">
+            <select
+              id="ContactForm-country"
+              class="select__select"
+              name="contact[Country]"
+              autocomplete="country"
+            >
+              <option value="">Country</option>
+              {{ all_country_option_tags }}
+            </select>
+            {% render 'icon-caret' %}
+          </div>
+          <label class="form__label field__label" for="ContactForm-country">Country</label>
+      </div>
+      
+      
       <div class="field">
         <textarea
           rows="10"
