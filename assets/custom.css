@@ -1455,3 +1455,88 @@
     transform: none;
   }
 }
+
+
+
+/* ==========================================================================
+   Card hover — force the media + overlay to cover the whole card
+   APPEND AT THE VERY END, below the previous override block.
+
+   The earlier rules were being clipped: .card__inner was still acting as the
+   containing block (and clipping overflow), so inset:0 filled the ratio box
+   rather than the card. These force it.
+   ========================================================================== */
+
+.card-wrapper .card {
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 750px) {
+  /* Inner stops being a positioned ancestor and stops clipping ----------- */
+  .card-wrapper:hover .card__inner,
+  .card-wrapper:focus-within .card__inner {
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  /* ...so these now resolve against .card and fill the whole thing ------- */
+  .card-wrapper:hover .card__media,
+  .card-wrapper:focus-within .card__media,
+  .card-wrapper:hover .card__hover-layer,
+  .card-wrapper:focus-within .card__hover-layer {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  .card-wrapper:hover .card__media,
+  .card-wrapper:focus-within .card__media {
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .card-wrapper:hover .card__hover-layer,
+  .card-wrapper:focus-within .card__hover-layer {
+    z-index: 3;
+  }
+
+  /* The media box itself drops its ratio padding and stretches ----------- */
+  .card-wrapper:hover .card__media .media,
+  .card-wrapper:focus-within .card__media .media {
+    position: absolute !important;
+    inset: 0 !important;
+    height: 100% !important;
+    padding-bottom: 0 !important;
+  }
+
+  .card-wrapper:hover .card__media .media::before,
+  .card-wrapper:focus-within .card__media .media::before {
+    content: none !important;
+  }
+
+  .card-wrapper:hover .card__media img,
+  .card-wrapper:focus-within .card__media img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* Info block keeps its space so the grid does not jump ----------------- */
+  .card-wrapper:hover > .card > .card__content,
+  .card-wrapper:focus-within > .card > .card__content {
+    visibility: hidden;
+  }
+
+  .card-wrapper:hover .card__badge,
+  .card-wrapper:focus-within .card__badge {
+    z-index: 4;
+  }
+}
