@@ -15,31 +15,35 @@
   {% render 'price-range-slider', filter: filter, filter_type: filter_type, uses_comma_decimals: uses_comma_decimals %}
 {% endcomment %}
 
-
 {%- liquid
   assign prefix = id_prefix | default: ''
 
+  comment
+    Rounded to whole units so the values line up with step="1" on the range
+    inputs. Without this the max handle sits just short of the end and the
+    bubble reads a value the slider can never actually reach.
+  endcomment
   if uses_comma_decimals
-    assign range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+    assign range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | round
   else
-    assign range_max = filter.range_max | money_without_currency | replace: ',', ''
+    assign range_max = filter.range_max | money_without_currency | replace: ',', '' | round
   endif
 
   assign current_min = 0
   if filter.min_value.value
     if uses_comma_decimals
-      assign current_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+      assign current_min = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | round
     else
-      assign current_min = filter.min_value.value | money_without_currency | replace: ',', ''
+      assign current_min = filter.min_value.value | money_without_currency | replace: ',', '' | round
     endif
   endif
 
   assign current_max = range_max
   if filter.max_value.value
     if uses_comma_decimals
-      assign current_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+      assign current_max = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | round
     else
-      assign current_max = filter.max_value.value | money_without_currency | replace: ',', ''
+      assign current_max = filter.max_value.value | money_without_currency | replace: ',', '' | round
     endif
   endif
 -%}
