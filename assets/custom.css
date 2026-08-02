@@ -411,10 +411,6 @@
     opacity: 1;
   }
 
-  .card-wrapper:hover .card__actions,
-  .card-wrapper:focus-within .card__actions {
-    transform: translate(-50%, 0);
-  }
 }
 
 /* Touch devices: keep the icons reachable, drop the overlay */
