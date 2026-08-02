@@ -5,7 +5,6 @@
   - card_product: {Object} Product Liquid object (optional)
   - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
   - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
-  - show_hover_image: {Boolean} Force the hover image swap regardless of the section setting. Default: true (optional)
   - show_vendor: {Boolean} Show the product vendor. Default: false
   - show_rating: {Boolean} Show the product rating. Default: false
   - extend_height: {Boolean} Card height extends to available container space. Default: true (optional)
@@ -20,7 +19,6 @@
 {% endcomment %}
 
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
-{{ 'component-card-hover-image.css' | asset_url | stylesheet_tag }}
 
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -49,13 +47,6 @@
     assign card_description = show_description | default: true, allow_false: true
     assign card_swatches = show_swatches | default: true, allow_false: true
     assign card_eyebrow = show_eyebrow | default: true, allow_false: true
-
-    comment
-      The hover image is driven by its own flag rather than the section's
-      `show_secondary_image` setting, which is false in collection.json.
-      Pass show_hover_image: false to switch it off for a specific section.
-    endcomment
-    assign card_hover_image = show_hover_image | default: true, allow_false: true
 
     assign card_short_description = card_product.metafields.custom.short_description.value
     if card_short_description == blank
@@ -116,11 +107,7 @@
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
-              {%- comment -%}
-                Changed: was `and show_secondary_image`, which the collection
-                section passes as false. Now driven by card_hover_image.
-              {%- endcomment -%}
-              {%- if card_product.media[1] != null and card_hover_image -%}
+              {%- if card_product.media[1] != null and show_secondary_image -%}
                 <img
                   srcset="
                     {%- if card_product.media[1].width >= 165 -%}{{ card_product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
