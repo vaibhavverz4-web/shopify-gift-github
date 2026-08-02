@@ -343,7 +343,12 @@
                       {%- endif %}
                     </div>
                   </details>
-                {% when 'price_range' %}
+
+                {% render 'price-range-slider',
+                    filter: filter,
+                    filter_type: filter_type,
+                    uses_comma_decimals: uses_comma_decimals %}
+                                    
                   {% liquid
                     assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
                     assign uses_comma_decimals = false
@@ -351,6 +356,7 @@
                       assign uses_comma_decimals = true
                     endif
                   %}
+
                   <details
                     id="Details-{{ forloop.index }}-{{ section.id }}"
                     class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
@@ -796,6 +802,7 @@
                           </div>
                         </div>
                       </details>
+
                     {% when 'price_range' %}
                       <details
                         id="Details-Mobile-{{ forloop.index }}-{{ section.id }}"
