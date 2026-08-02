@@ -1335,3 +1335,122 @@
 
 
 
+/* ==========================================================================
+   Card hover — full-bleed image
+   On hover the media and the overlay expand out of the ratio box and cover
+   the whole card, including the title/price area underneath.
+
+   How it works: .card__inner is switched to position:static on hover, so its
+   absolutely positioned children resolve against .card instead. The inner
+   keeps its ratio padding, so the card never changes height and the grid
+   does not jump.
+
+   Load AFTER component-card.css.
+   ========================================================================== */
+
+.card-wrapper .card {
+  position: relative;
+}
+
+/* Secondary image hidden until hover ------------------------------------- */
+
+.card-wrapper .media--hover-effect > img + img {
+  opacity: 0;
+  transition: opacity var(--duration-default, 0.25s) ease;
+}
+
+.card-wrapper .media--hover-effect > img:first-child {
+  transition: opacity var(--duration-default, 0.25s) ease;
+}
+
+/* Overlay layer sits above the media, so clicks reach the product link ---- */
+
+.card__hover-layer {
+  pointer-events: none;
+}
+
+.card__actions,
+.card__actions * {
+  pointer-events: auto;
+}
+
+@media screen and (min-width: 750px) {
+  /* --- The swap --- */
+
+  .card-wrapper:hover .media--hover-effect > img:first-child:not(:only-child) {
+    opacity: 0;
+  }
+
+  .card-wrapper:hover .media--hover-effect > img + img {
+    opacity: 1;
+  }
+
+  /* --- Break out of the ratio box --- */
+
+  .card-wrapper:hover .card__inner {
+    position: static;
+  }
+
+  .card-wrapper:hover .card__media,
+  .card-wrapper:hover .card__hover-layer {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+
+  .card-wrapper:hover .card__media .media {
+    height: 100%;
+    padding-bottom: 0 !important;
+  }
+
+  .card-wrapper:hover .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-wrapper:hover .card__hover-layer {
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- Hide the info block, keep its space so the card keeps its height --- */
+
+  .card-wrapper:hover > .card > .card__content {
+    visibility: hidden;
+  }
+
+  /* Sold out / sale badge stays readable above the image */
+  .card-wrapper:hover .card__badge {
+    z-index: 4;
+  }
+}
+
+/* Keyboard parity ---------------------------------------------------------- */
+
+@media screen and (min-width: 750px) {
+  .card-wrapper:focus-within .media--hover-effect > img:first-child:not(:only-child) {
+    opacity: 0;
+  }
+
+  .card-wrapper:focus-within .media--hover-effect > img + img {
+    opacity: 1;
+  }
+}
+
+/* Touch devices: no hover state, so keep the plain card -------------------- */
+
+@media (hover: none) {
+  .card-wrapper .media--hover-effect > img + img {
+    display: none;
+  }
+
+  .card__hover-layer {
+    display: none;
+  }
+}
