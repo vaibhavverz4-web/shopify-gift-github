@@ -1585,11 +1585,12 @@
   pointer-events: none;
 }
 
-.price-slider__range {
-  pointer-events: none;
-  touch-action: none;
-}
 
+.price-slider__range {
+  pointer-events: auto;
+  touch-action: none;
+  background: transparent;
+}
 .price-slider__range::-webkit-slider-thumb {
   pointer-events: auto;
 }
@@ -1602,4 +1603,4 @@
    two meet, otherwise the lower one becomes impossible to grab */
 .price-slider__range--min { z-index: 2; }
 .price-slider__range--max { z-index: 3; }
-.price-slider__range.is-on-top { z-index: 4; }
+.price-slider__range.is-active { z-index: 5; }
