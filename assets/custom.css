@@ -1536,3 +1536,7 @@
     z-index: 4;
   }
 }
+
+.facets-vertical .facets__disclosure-vertical:first-of-type .facet-checkbox::before {
+  border-radius: 50%;
+}
