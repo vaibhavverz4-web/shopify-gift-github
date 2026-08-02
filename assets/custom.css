@@ -1332,3 +1332,70 @@
     display: none;
   }
 }
+
+
+
+/* ==========================================================================
+   Card hover — secondary image swap
+   The overlay layer sits above .media, so Dawn's `.media--hover-effect:hover`
+   never fires. These rules key off the wrapper instead.
+   Load AFTER component-card.css.
+   ========================================================================== */
+
+/* Secondary image hidden by default */
+.card-wrapper .media--hover-effect > img + img {
+  opacity: 0;
+  transition: opacity var(--duration-default, 0.2s) ease,
+              transform var(--duration-long, 0.5s) ease;
+}
+
+.card-wrapper .media--hover-effect > img:first-child {
+  transition: opacity var(--duration-default, 0.2s) ease,
+              transform var(--duration-long, 0.5s) ease;
+}
+
+@media screen and (min-width: 750px) {
+  /* Hovering anywhere on the card — including the overlay — swaps the image */
+  .card-wrapper:hover .media--hover-effect > img:first-child:not(:only-child) {
+    opacity: 0;
+  }
+
+  .card-wrapper:hover .media--hover-effect > img + img {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+/* Keyboard users: swap when any control inside the card takes focus */
+.card-wrapper:focus-within .media--hover-effect > img:first-child:not(:only-child) {
+  opacity: 0;
+}
+
+.card-wrapper:focus-within .media--hover-effect > img + img {
+  opacity: 1;
+}
+
+/* ---- Let clicks pass through the overlay to the product link -------------- */
+
+.card__hover-layer {
+  pointer-events: none;
+}
+
+.card__actions,
+.card__actions * {
+  pointer-events: auto;
+}
+
+/* ---- Touch devices: no hover, so keep the primary image only ------------- */
+
+@media (hover: none) {
+  .card-wrapper .media--hover-effect > img + img {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-wrapper:hover .media--hover-effect > img + img {
+    transform: none;
+  }
+}
