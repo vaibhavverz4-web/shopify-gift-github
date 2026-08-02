@@ -389,8 +389,15 @@
                           </facet-remove>
                         {%- endif -%}
                       </div>
+
                       
                       <price-range class="facets__price">
+                        {% render 'price-range-slider',
+   filter: filter,
+   filter_type: filter_type,
+   uses_comma_decimals: uses_comma_decimals,
+   id_prefix: 'Mobile-' %}
+   
                         <span class="field-currency">{{ cart.currency.symbol }}</span>
                         <div class="field">
                           <input
