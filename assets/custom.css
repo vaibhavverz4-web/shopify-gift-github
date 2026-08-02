@@ -1540,3 +1540,12 @@
 .facets-vertical .facets__disclosure-vertical:first-of-type .facet-checkbox::before {
   border-radius: 50%;
 }
+
+.facets-vertical .facet-checkbox::before {
+  border-radius: 50%;
+}
+
+.facets-vertical [data-filter='color'] .facet-checkbox::before,
+.facets-vertical [data-filter='size'] .facet-checkbox::before {
+  border-radius: 50%;
+}
