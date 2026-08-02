@@ -911,10 +911,26 @@
 
 /* --- Price range -------------------------------------------------------- */
 
+.price-slider__fields {
+  display: none;
+}
+
 .facets-vertical .facets__price {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.facets-vertical .facets__price.price-slider,
+.mobile-facets__submenu .facets__price.price-slider,
+.price-slider {
+  display: block;
+  width: 100%;
+  gap: 0;
+}
+
+.price-slider__control {
+  width: 100%;
 }
 
 .facets-vertical .facets__price .field__input {
