@@ -1577,3 +1577,29 @@
   background: var(--swatch);
   box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(var(--color-foreground));
 }
+
+
+/* Inputs stay grabbable; only the decorative track ignores the pointer */
+.price-slider__track,
+.price-slider__fill {
+  pointer-events: none;
+}
+
+.price-slider__range {
+  pointer-events: none;
+  touch-action: none;
+}
+
+.price-slider__range::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+.price-slider__range::-moz-range-thumb {
+  pointer-events: auto;
+}
+
+/* The max handle sits on top by default; JS lifts the min handle when the
+   two meet, otherwise the lower one becomes impossible to grab */
+.price-slider__range--min { z-index: 2; }
+.price-slider__range--max { z-index: 3; }
+.price-slider__range.is-on-top { z-index: 4; }
