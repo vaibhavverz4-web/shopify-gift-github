@@ -1549,3 +1549,16 @@
 .facets-vertical [data-filter='size'] .facet-checkbox::before {
   border-radius: 50%;
 }
+
+.facets-vertical [data-filter='color'] .facet-checkbox::before {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--swatch, transparent);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.facets-vertical [data-filter='color'] .facet-checkbox:has(input:checked)::before {
+  background: var(--swatch);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(var(--color-foreground));
+}
