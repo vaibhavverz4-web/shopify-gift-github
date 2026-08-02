@@ -133,9 +133,15 @@
               {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
               {% case filter.type %}
                 {% when 'boolean', 'list' %}
+                  {%- comment -%}
+                    data-filter is a separate attribute, not part of class.
+                    CSS can then target a specific group, e.g.
+                    [data-filter='color'] .facet-checkbox::before { border-radius: 50%; }
+                  {%- endcomment -%}
                   <details
                     id="Details-{{ forloop.index }}-{{ section.id }}"
-                    class="ta-filter="{{ filter.label | downcase | handle }}" ta-filter="{{ filter.label | downcase | handle }}" {% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
+                    class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
+                    data-filter="{{ filter.label | downcase | handle }}"
                     data-index="{{ forloop.index }}"
                     {% if filter_type == 'vertical' and forloop.index == 1 %}
                       open
@@ -184,6 +190,11 @@
                               <label
                                 for="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
                                 class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}"
+                                {%- if value.swatch.color -%}
+                                  style="--swatch: {{ value.swatch.color }};"
+                                {%- else -%}
+                                  style="--swatch: {{ value.label | downcase | strip | replace: ' ', '' }};"
+                                {%- endif -%}
                               >
                                 <input
                                   type="checkbox"
@@ -248,6 +259,11 @@
                               <label
                                 for="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}-no-js"
                                 class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}"
+                                {%- if value.swatch.color -%}
+                                  style="--swatch: {{ value.swatch.color }};"
+                                {%- else -%}
+                                  style="--swatch: {{ value.label | downcase | strip | replace: ' ', '' }};"
+                                {%- endif -%}
                               >
                                 <input
                                   type="checkbox"
@@ -332,6 +348,7 @@
                   <details
                     id="Details-{{ forloop.index }}-{{ section.id }}"
                     class="{% if filter_type == 'horizontal' %}disclosure-has-popup facets__disclosure{% else %} facets__disclosure-vertical{% endif %} js-filter"
+                    data-filter="{{ filter.label | downcase | handle }}"
                     data-index="{{ forloop.index }}"
                     {% if filter_type == 'vertical' and forloop.index == 1 %}
                       open
@@ -665,6 +682,7 @@
                       <details
                         id="Details-Mobile-{{ forloop.index }}-{{ section.id }}"
                         class="mobile-facets__details js-filter"
+                        data-filter="{{ filter.label | downcase | handle }}"
                         data-index="mobile-{{ forloop.index }}"
                       >
                         <summary class="mobile-facets__summary focus-inset">
@@ -692,6 +710,11 @@
                                 <label
                                   for="Filter-{{ filter.param_name | escape }}-mobile-{{ forloop.index }}"
                                   class="mobile-facets__label{% if value.count == 0 and value.active == false %} mobile-facets__label--disabled{% endif %}"
+                                  {%- if value.swatch.color -%}
+                                    style="--swatch: {{ value.swatch.color }};"
+                                  {%- else -%}
+                                    style="--swatch: {{ value.label | downcase | strip | replace: ' ', '' }};"
+                                  {%- endif -%}
                                 >
                                   <input
                                     class="mobile-facets__checkbox"
@@ -771,6 +794,7 @@
                       <details
                         id="Details-Mobile-{{ forloop.index }}-{{ section.id }}"
                         class="mobile-facets__details js-filter"
+                        data-filter="{{ filter.label | downcase | handle }}"
                         data-index="mobile-{{ forloop.index }}"
                       >
                         <summary class="mobile-facets__summary focus-inset">
