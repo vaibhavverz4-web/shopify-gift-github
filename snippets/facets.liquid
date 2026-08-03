@@ -13,8 +13,7 @@
 {% endcomment %}
 
 {{ 'component-show-more.css' | asset_url | stylesheet_tag }}
-{{ 'component-price-slider.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'price-range-slider.js' | asset_url }}" defer="defer"></script>
+
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by
