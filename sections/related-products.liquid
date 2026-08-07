@@ -16,12 +16,36 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  comment
+    Shopify na dynamic recommendations ne order history joie che.
+    Naya store ma / orders vagar e khali aave che — etle section blank dekhaay.
+    Niche nu logic: recommendations male to e j vaparo, nahitar
+    product ni pehli collection na products fallback tarike batavo.
+  endcomment
+
+  assign has_recommendations = false
+  if recommendations.performed and recommendations.products_count > 0
+    assign has_recommendations = true
+  endif
+
+  assign fallback_collection = blank
+  unless has_recommendations
+    for collection in product.collections
+      if collection.products_count > 1
+        assign fallback_collection = collection
+        break
+      endif
+    endfor
+  endunless
+-%}
+
 <div class="color-{{ section.settings.color_scheme }} gradient no-js-hidden">
   <product-recommendations
     class="related-products page-width section-{{ section.id }}-padding isolate"
     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}"
   >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
+    {%- if has_recommendations -%}
       <h2 class="related-products__heading {{ section.settings.heading_size }}">
         {{ section.settings.heading }}
       </h2>
@@ -41,7 +65,35 @@
           </li>
         {% endfor %}
       </ul>
-    {% endif %}
+
+    {%- elsif fallback_collection != blank -%}
+      <h2 class="related-products__heading {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+      <ul
+        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+        role="list"
+      >
+        {%- assign shown = 0 -%}
+        {%- for fallback_product in fallback_collection.products -%}
+          {%- unless fallback_product.id == product.id -%}
+            <li class="grid__item">
+              {% render 'card-product',
+                card_product: fallback_product,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating
+              %}
+            </li>
+            {%- assign shown = shown | plus: 1 -%}
+            {%- if shown >= section.settings.products_to_show -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </product-recommendations>
 </div>
 
