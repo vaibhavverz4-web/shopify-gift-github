@@ -149,7 +149,67 @@
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "6403324215520875301": {
+        "type": "shopify://apps/mst-wishlist-prime/blocks/v3-app-embed/7f9269b0-1b45-4d0c-8479-faf04f05d8ac",
+        "disabled": false,
+        "settings": {
+          "multi_language": false,
+          "drawer_title": "My Wishlist",
+          "share_page_title": "Wishlist",
+          "login_msg": "Wishlist is not saved permanently yet. Please <a class=\"link-text\" href=\"/account/login\">log in</a> or <a class=\"link-text\" href=\"/account/register\">Create Account</a> to save it.",
+          "empty_msg": "<h4>Your wishlist is empty!</h4> \r\n<p>Explore more and shortlist some items</p>",
+          "enable_drawer": true,
+          "multi_category": true,
+          "open_drawer_on": "1",
+          "float_icon": true,
+          "heart_icon_color": "#000000",
+          "iwish_count_color": "#FFFFFF",
+          "icon_position": "middle-left",
+          "custom_icon": "",
+          "variant_selector": "[name=id]",
+          "option_selector": "",
+          "custom_settings": "{\"show_price_on_login\": \"false\", \"show_vendor\": \"false\", \"cart_counter\": \".cart-count-bubble span:first-of-type\", \"custom_filters\": \"facet-filters-form, .facet-filters__sort\", \"custom_delay\": \"500\", \"remove_all_wishlist\": \"false\",\"hide_cart_btn\": \"false\"}"
+        }
+      },
+      "14061948960770880968": {
+        "type": "shopify://apps/whatsapp-chat-button/blocks/app-block/f71705e0-349b-4bbd-820f-462063fb1f8d",
+        "disabled": false,
+        "settings": {
+          "whatsapp_number": "+923097770000",
+          "welcome_message": "Hello! I have a question about your store.",
+          "widget_variant": "icon",
+          "video_frequency_behavior": "once_per_session",
+          "video_frequency_limit": 3,
+          "video_frequency_cooldown_hours": 24,
+          "button_color": "#68D549",
+          "icon_text_color": "#FFFFFF",
+          "button_size": 60,
+          "show_label": false,
+          "label_text": "Chat with us",
+          "position_horizontal": "right",
+          "position_bottom_desktop": 15,
+          "position_edge_desktop": 15,
+          "position_bottom_mobile": 15,
+          "position_edge_mobile": 15,
+          "include_page_url": true,
+          "animation": true,
+          "disabled": false,
+          "enable_popup": false,
+          "popup_delay": 5,
+          "popup_message": "Hi! Need help? 👋",
+          "popup_duration": 8
+        }
+      },
+      "13047258039897440615": {
+        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {
+          "widget_type": "review-widget"
+        }
+      }
+    }
   },
   "presets": {
     "Default": {
